@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>注册界面</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css"/>
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!--<![endif]-->
+    <!--[if lte IE 8 ]>
+    <script src="//apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+    <![endif]-->
+    <!--[if IE 6]>
+    <script src="/static/js/DD_belatedPNG_0.0.8a.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        DD_belatedPNG.fix('*');
+    </script>
+    <![endif]-->
+    <style>
+        .infobox .yzm {
+            width: 80px;
+            height: 30px;
+            margin: 5px 5px 0 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="loginpage1">
+    <div class="header">
+        <a href="#">本人驾到企业注册</a>
+    </div>
+    <div class="regstep">
+        <ul class="regstepnav bradius3">
+            <li><a href="#" class="active" id="telbox">1&nbsp;&nbsp;填写手机号</a></li>
+            <li><a href="#" id="infobox">2&nbsp;&nbsp;完善信息资料</a></li>
+            <li><a href="#">3&nbsp;&nbsp;注册完成</a></li>
+        </ul>
+            <form action="{:U('register/doreg')}" id="reg_form" method="post" accept-charset="utf-8">
+                <div class="regbox telbox bradius3">
+                <div class="reg-lb step-1">
+                    <label><em>*</em>手机号码</label>
+                    <input type="text" name="mobile" id="mobile" autocomplete="off" class="txt bradius5"
+                           required="required" pattern="[0-9]{11}"/>
+                </div>
+                <div class="reg-lb step-1">
+                    <label><em>*</em>验证码</label>
+                    <input type="text" name="mobileCode" maxlength="6" id="phoneCode" autocomplete="off"
+                           class="txt2 bradius5" required="required"/>
+                    <input type="button" onclick="bsendMobileCode();" value="发送短信验证码" id="dyMobileButton"
+                           class="btn bradius3"/>
+                </div>
+                <div class="reg-lb2 step-1">
+                    <input type="button" class="btn2 bradius3" style="background-color: #0064b6;" value="下一步" id="reg_check" />
+                </div>
+                </div>
+                <div class="regbox infobox bradius3" style="display: none;">
+                <div class="reg-lb step-2">
+                    <label><em>*</em>登录名</label>
+                    <input type="text" id="regName" value="" name="regName" maxlength="20" autocomplete="off" class="txt bradius5" required="required"
+                           placeholder="请输入登录名"/>
+                </div>
+                <div class="reg-lb step-2">
+                    <label><em>*</em>请设置密码</label>
+                    <input type="password" id="pwd" name="pwd" value="" autocomplete="off" maxlength="16" class="txt bradius5" required="required"
+                           placeholder="请输入6-15位密码"/>
+                </div>
+                <div class="reg-lb step-2">
+                    <label><em>*</em>请确认密码</label>
+                    <input type="password" id="pwdRepeat" value="" name="pwdRepeat"required="required" maxlength="16" autocomplete="off" class="txt bradius5" placeholder="请再次输入密码"/>
+                </div>
+                <div class="reg-lb step-2">
+                    <label><em>*</em>企业名称</label>
+                    <input type="text" autocomplete="off" maxlength="40" required="required" id="companyname" name="companyname" class="txt bradius5" placeholder="请输入企业名称"/>
+                </div>
+                <div class="reg-lb step-2">
+                    <label>联系电话</label>
+                    <input id="tel" name="tel" type="text" maxlength="20" autocomplete="off" class="txt bradius5" placeholder="请输入联系电话"/>
+                </div>
+                <div class="reg-lb step-2">
+                    <label>企业邮箱</label>
+                    <input type="text" id="email" name="email" maxlength="50" autocomplete="off" class="txt bradius5" placeholder="请输入企业邮箱"/>
+                </div>
+                <div class="reg-lb step-2">
+                    <label><em>*</em>省市区县</label>
+                    <select name="province" id="province">
+                        <option value="0">--省--</option>
+                        {foreach name="province" item="vo" key="k" }
+                        <option value="{$k}">{$vo}</option>
+                        {/foreach}
+                    </select>
+                    <select name="city" id="city">
+                        <option value="0">--市--</option>
+                    </select>
+                    <select name="district" id="district">
+                        <option value="0">--县/区--</option>
+                    </select>
+
+                </div>
+                <div class="reg-lb step-2">
+                    <label><em>*</em>详细地址</label>
+                    <input type="text" autocomplete="off" name="companyaddr" id="companyaddr" maxlength="50" required="required" class="txt bradius5" placeholder="请输入详细地址"/>
+                </div>
+                <div class="reg-lb step-2">
+                    <label><em>*</em>验证码</label>
+                    <input type="text" autocomplete="off" required="required" class="txt txt2 bradius5"  name="authcode" id="authcode" maxlength="4"
+                           placeholder="请输入图片验证码"/>
+                    <img src="/static/img/yzm.png" class="yzm" id="captcha_img"/>
+                    <a href="#" class="bgnyzm" onclick="changeCode()">换一张</a>
+                </div>
+                <div class="reg-lb2 step-2">
+                    <input type="button" class="btn2 bradius3" style="background-color: #0064b6;" value="注册" id="regbutton"/>
+                </div>
+                </div>
+            </form>
+        <div class="regbox bradius3 regok" style="display: none;">
+            <p class="regok">恭喜您注册成功！</p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function jumpurl(){
+        window.location.href='{:U('login/index')}';
+    }
+    var validateRegExp = {
+        decmal: "^([+-]?)\\d*\\.\\d+$", //浮点数
+        decmal1: "^[1-9]\\d*.\\d*|0.\\d*[1-9]\\d*$", //正浮点数
+        decmal2: "^-([1-9]\\d*.\\d*|0.\\d*[1-9]\\d*)$", //负浮点数
+        decmal3: "^-?([1-9]\\d*.\\d*|0.\\d*[1-9]\\d*|0?.0+|0)$", //浮点数
+        decmal4: "^[1-9]\\d*.\\d*|0.\\d*[1-9]\\d*|0?.0+|0$", //非负浮点数（正浮点数 + 0）
+        decmal5: "^(-([1-9]\\d*.\\d*|0.\\d*[1-9]\\d*))|0?.0+|0$", //非正浮点数（负浮点数 + 0）
+        intege: "^-?[1-9]\\d*$", //整数
+        intege1: "^[1-9]\\d*$", //正整数
+        intege2: "^-[1-9]\\d*$", //负整数
+        num: "^([+-]?)\\d*\\.?\\d+$", //数字
+        num1: "^[1-9]\\d*|0$", //正数（正整数 + 0）
+        num2: "^-[1-9]\\d*|0$", //负数（负整数 + 0）
+        ascii: "^[\\x00-\\xFF]+$", //仅ACSII字符
+        chinese: "^[\\u4e00-\\u9fa5]+$", //仅中文
+        color: "^[a-fA-F0-9]{6}$", //颜色
+        date: "^\\d{4}(\\-|\\/|\.)\\d{1,2}\\1\\d{1,2}$", //日期
+        email: "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$", //邮件
+        idcard: "^[1-9]([0-9]{14}|[0-9]{17})$", //身份证
+        ip4: "^(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)$", //ip地址
+        letter: "^[A-Za-z]+$", //字母
+        letter_l: "^[a-z]+$", //小写字母
+        letter_u: "^[A-Z]+$", //大写字母
+        mobile: "^0?(13|15|17|18|14)[0-9]{9}$", //手机
+        notempty: "^\\S+$", //非空
+        password: "^.*[A-Za-z0-9\\w_-]+.*$", //密码
+        fullNumber: "^[0-9]+$", //数字
+        picture: "(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$", //图片
+        qq: "^[1-9]*[1-9][0-9]*$", //QQ号码
+        rar: "(.*)\\.(rar|zip|7zip|tgz)$", //压缩文件
+        tel: "^[0-9\-()()]{7,18}$", //电话号码的函数(包括验证国内区号,国际区号,分机号)
+        url: "^http[s]?:\\/\\/([\\w-]+\\.)+[\\w-]+([\\w-./?%&=]*)?$", //url
+        username: "^[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+$", //户名
+        deptname: "^[A-Za-z0-9_()()\\-\\u4e00-\\u9fa5]+$", //单位名
+        zipcode: "^\\d{6}$", //邮编
+        realname: "^[A-Za-z\\u4e00-\\u9fa5]+$", // 真实姓名
+        companyname: "^[A-Za-z0-9_()()\\-\\u4e00-\\u9fa5]+$",
+        companyaddr: "^[A-Za-z0-9_()()\\#\\-\\u4e00-\\u9fa5]+$",
+        companysite: "^http[s]?:\\/\\/([\\w-]+\\.)+[\\w-]+([\\w-./?%&#=]*)?$"
+    };
+    function pwdLevel(value) {
+        var pattern_1 = /^.*([\W_])+.*$/i;
+        var pattern_2 = /^.*([a-zA-Z])+.*$/i;
+        var pattern_3 = /^.*([0-9])+.*$/i;
+        var level = 0;
+        if (value.length > 10) {
+            level++;
+        }
+        if (pattern_1.test(value)) {
+            level++;
+        }
+        if (pattern_2.test(value)) {
+            level++;
+        }
+        if (pattern_3.test(value)) {
+            level++;
+        }
+        if (level > 3) {
+            level = 3;
+        }
+        return level;
+    }
+    var weakPwdArray = ["123456","123456789","111111","5201314","12345678","123123","password","1314520","123321","7758521","1234567","5211314","666666","520520","woaini","520131","11111111","888888","hotmail.com","112233","123654","654321","1234567890","a123456","88888888","163.com","000000","yahoo.com.cn","sohu.com","yahoo.cn","111222tianya","163.COM","tom.com","139.com","wangyut2","pp.com","yahoo.com","147258369","123123123","147258","987654321","100200","zxcvbnm","123456a","521521","7758258","111222","110110","1314521","11111111","12345678","a321654","111111","123123","5201314","00000000","q123456","123123123","aaaaaa","a123456789","qq123456","11112222","woaini1314","a123123","a111111","123321","a5201314","z123456","liuchang","a000000","1314520","asd123","88888888","1234567890","7758521","1234567","woaini520","147258369","123456789a","woaini123","q1q1q1q1","a12345678","qwe123","123456q","121212","asdasd","999999","1111111","123698745","137900","159357","iloveyou","222222","31415926","123456","111111","123456789","123123","9958123","woaini521","5201314","18n28n24a5","abc123","password","123qwe","123456789","12345678","11111111","dearbook","00000000","123123123","1234567890","88888888","111111111","147258369","987654321","aaaaaaaa","1111111111","66666666","a123456789","11223344","1qaz2wsx","xiazhili","789456123","password","87654321","qqqqqqqq","000000000","qwertyuiop","qq123456","iloveyou","31415926","12344321","0000000000","asdfghjkl","1q2w3e4r","123456abc","0123456789","123654789","12121212","qazwsxedc","abcd1234","12341234","110110110","asdasdasd","123456","22222222","123321123","abc123456","a12345678","123456123","a1234567","1234qwer","qwertyui","123456789a","qq.com","369369","163.com","ohwe1zvq","xiekai1121","19860210","1984130","81251310","502058","162534","690929","601445","1814325","as1230","zz123456","280213676","198773","4861111","328658","19890608","198428","880126","6516415","111213","195561","780525","6586123","caonima99","168816","123654987","qq776491","hahabaobao","198541","540707","leqing123","5403693","123456","123456789","111111","5201314","123123","12345678","1314520","123321","7758521","1234567","5211314","520520","woaini","520131","666666","RAND#a#8","hotmail.com","112233","123654","888888","654321","1234567890","a123456"];
+    //验证规则
+    var validateRules = {
+        isNull: function (str) {
+            return (str == "" || typeof str != "string");
+        },
+        betweenLength: function (str, _min, _max) {
+            return (str.length >= _min && str.length <= _max);
+        },
+        isUid: function (str) {
+            return new RegExp(validateRegExp.username).test(str);
+        },
+        isCode: function (str) {
+            return new RegExp(validateRegExp.zipcode).test(str);
+        },
+        fullNumberName: function (str) {
+            return new RegExp(validateRegExp.fullNumber).test(str);
+        },
+        isPwd: function (str) {
+            return /^.*([\W_a-zA-z0-9-])+.*$/i.test(str);
+        },
+        isPwdRepeat: function (str1, str2) {
+            return (str1 == str2);
+        },
+        isEmail: function (str) {
+            return new RegExp(validateRegExp.email).test(str);
+        },
+        isTel: function (str) {
+            return new RegExp(validateRegExp.tel).test(str);
+        },
+        isMobile: function (str) {
+            return new RegExp(validateRegExp.mobile).test(str);
+        },
+        checkType: function (element) {
+            return (element.attr("type") == "checkbox" || element.attr("type") == "radio" || element.attr("rel") == "select");
+        },
+        isRealName: function (str) {
+            return new RegExp(validateRegExp.realname).test(str);
+        },
+        isCompanyname: function (str) {
+            return new RegExp(validateRegExp.companyname).test(str);
+        },
+        isCompanyaddr: function (str) {
+            return new RegExp(validateRegExp.companyaddr).test(str);
+        },
+        isCompanysite: function (str) {
+            return new RegExp(validateRegExp.companysite).test(str);
+        },
+        simplePwd: function (str) {
+            return pwdLevel(str) == 1;
+        },
+        weakPwd: function (str) {
+            for (var i = 0; i < weakPwdArray.length; i++) {
+                if (weakPwdArray[i] == str) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+    function genTimestamp() {
+        var time = new Date();
+        return time.getTime();
+    }
+    var delayTime = 60;
+    function countDown() {
+        delayTime--;
+        $("#dyMobileButton").val(delayTime + '秒后重新获取');
+        if (delayTime == 0) {
+            delayTime = 60;
+            $("#dyMobileButton").val("获取短信验证码");
+            $("#dyMobileButton").removeAttr("disabled");
+        } else {
+            setTimeout(countDown, 1000);
+        }
+    }
+    var delayTime2 = 60;
+    var delayFlag2 = true;
+    function countDown2() {
+        delayTime2--;
+        $("#dyMobileButton").attr("disabled", "disabled");
+        $("#dyMobileButton").val(delayTime2 + '秒后重新获取');
+        if (delayTime2 == 1) {
+            delayTime2 = 60;
+            $("#dyMobileButton").val("获取短信验证码");
+            $("#dyMobileButton").removeAttr("disabled");
+            delayFlag2 = true;
+        } else {
+            delayFlag2 = false;
+            countDown2.timer = setTimeout(countDown2, 1000);
+        }
+    }
+    countDown2.timer = '';
+    // 手机注册发送验证码target
+    function bsendmCode() {
+        if ($("#dyMobileButton").attr("disabled") || delayFlag2 == false) {
+            return;
+        }
+        $.post("{:U('base/mobilecode')}",{mobile:$("#mobile").val()},function (ref) {
+            if(ref.code){
+                alert(ref.msg);
+                return false
+            }
+            $("#dyMobileButton").val("60秒后重新获取");
+            if (ref.msg) {
+                alert(ref.msg);
+            } else {
+                alert("验证码已发送，请查收短信。");
+            }
+            setTimeout(countDown2, 1000);
+        },'json');
+    }
+    //主流程发送手机验证码
+    function bsendMobileCode() {
+        var mobile = $("#mobile").val();
+        if (validateRules.isNull(mobile)) {
+            alert("请输入手机号");
+            return;
+        }
+        if (!validateRules.isMobile(mobile)) {
+            alert("手机号码格式有误，请输入正确的手机号");
+            return;
+        }
+        bsendmCode();
+
+    }
+    function changeCode() {
+        $("#captcha_img").attr("src", "{:U('register/verify')}?t=" + genTimestamp());
+    }
+    $('#province').change(function () {
+        $.post("{:U('base/getcity')}",{pid:$(this).children('option:selected').val()},function (ref) {
+            if(ref.code){
+                alert(ref.msg);
+                return false;
+            }
+            var html=new Array();
+            html.push('<option value="0">--市--</option>');
+            $.each(ref.data, function (n, value) {
+                html.push('<option value="'+n+'">'+value+'</option>');
+            });
+            $('#city').html(html.join(''));
+        },'json');
+    });
+    $('#city').change(function () {
+        $.post("{:U('base/getdistrict')}",{pid:$(this).children('option:selected').val()},function (ref) {
+            if(ref.code){
+                alert(ref.msg);
+                return false;
+            }
+            var html=new Array();
+            html.push('<option value="0">--县/区--</option>');
+            $.each(ref.data, function (n, value) {
+                html.push('<option value="'+n+'">'+value+'</option>');
+            });
+            $('#district').html(html.join(''));
+        },'json');
+    });
+    function check() {
+        var mobile = $('#mobile').val();
+        var phoneCode = $('#phoneCode').val();
+        if (validateRules.isNull(mobile)) {
+            alert("请输入手机号");
+            return;
+        }
+        if (!validateRules.isMobile(mobile)) {
+            alert("手机号码格式有误，请输入正确的手机号");
+            return;
+        }
+        if(validateRules.isNull(phoneCode)){
+            alert("请输入验证码");
+            return;
+        }
+        if(!validateRules.isCode(phoneCode)){
+            alert("验证码格式有误,请输入正确的验证码");
+            return;
+        }
+        $.post("{:U('register/check')}",{mobile:mobile,pcode:phoneCode},function (ref) {
+            if(ref.code){
+                alert(ref.msg);
+                return false;
+            }
+            $('.telbox').hide();
+            $('#telbox').removeClass();
+            changeCode();
+            $('#infobox').addClass('active');
+            $('.infobox').show();
+        },'json');
+    }
+    function jscheck() {
+        var mobile = $('#mobile').val();
+        var phoneCode = $('#phoneCode').val();
+        if (validateRules.isNull(mobile)) {
+            alert("请输入手机号");
+            return false;
+        }
+        if (!validateRules.isMobile(mobile)) {
+            alert("手机号码格式有误，请输入正确的手机号");
+            return false;
+        }
+        if(validateRules.isNull(phoneCode)){
+            alert("请输入验证码");
+            return false;
+        }
+        if(!validateRules.isCode(phoneCode)){
+            alert("验证码格式有误,请输入正确的验证码");
+            return false;
+        }
+        var regName = $('#regName').val();
+        if (validateRules.isNull(regName)) {
+            alert("请输入登录名");
+            return false;
+        }
+       /* if(!validateRules.isUid(regName)){
+            alert("请输入正确的登录名");
+            return false;
+        }*/
+        var pwd = $('#pwd').val();
+        /*if ((validateRules.isNull(pwd) == false) && (pwd != '') && regName == pwd) {
+            alert('您的密码与账户信息太重合，有被盗风险，请换一个密码');
+            return false;
+        }*/
+        var format = validateRules.isPwd(pwd);
+        var length = validateRules.betweenLength(pwd, 6, 20);
+        if (!length && format) {
+            alert('密码长度只能在6-20位字符之间');
+            return false;
+        } else if (!length && !format) {
+            alert('密码只能由英文、数字及标点符号组成');
+            return false;
+        } else if (length && !format) {
+            alert('密码只能由英文、数字及标点符号组成');
+            return false;
+        } /*else if (validateRules.weakPwd(pwd)) {
+            alert('该密码比较简单，有被盗风险，建议您更改为复杂密码');
+            return false;
+        } else {
+            if (validateRules.simplePwd(pwd)) {
+                alert('该密码比较简单，有被盗风险，建议您更改为复杂密码，如字母+数字的组合');
+                return false;
+            }
+        }*/
+        var pwdRepeat = $('#pwdRepeat').val();
+        if(!validateRules.isPwdRepeat(pwd,pwdRepeat)){
+            alert('密码不一致');
+            return false;
+        }
+        var companyname = $('#companyname').val();
+        if (validateRules.isNull(companyname) || !validateRules.isCompanyname(companyname)) {
+            alert("请输入正确的企业名称");
+            return false;
+        }
+        var tel = $('#tel').val();
+        if(!validateRules.isNull(tel) && !validateRules.isTel(tel)){
+            alert("请输入正确的联系电话");
+            return false;
+        }
+        var email = $('#email').val();
+        if(!validateRules.isNull(email) && !validateRules.isEmail(email)){
+            alert("请输入正确的企业邮箱");
+            return false;
+        }
+        if($('#province option').length!=1 && $('#province').val()==0){
+            alert("请输入选择所在省");
+            return false;
+        }
+        if($('#city option').length!=1 && $('#city').val()==0){
+            alert("请输入选择所在城市");
+            return false;
+        }
+        if($('#district option').length!=1 && $('#district').val()==0){
+            alert("请输入选择所在城市县区");
+            return false;
+        }
+        var companyaddr = $('#companyaddr').val();
+        if (validateRules.isNull(companyaddr) || !validateRules.isCompanyaddr(companyaddr)) {
+            alert("请输入正确的企业详细地址");
+            return false;
+        }
+
+        var authcode = $('#authcode').val();
+        if(validateRules.isNull(authcode)){
+            alert("请输入验证码");
+            return false;
+        }
+        $("#regbutton").attr("disabled", true);
+        $("#regbutton").val("注册中...");
+        $.post("{:U('register/doreg')}",$('#reg_form').serialize(),function (ref) {
+            $("#regbutton").removeAttr("disabled");
+            if(ref.code){
+                alert(ref.msg);
+                return false;
+            }
+            $('.infobox').hide();
+            $('#infobox').removeClass();
+            $('.regok').show();
+            $('#regok').addClass('active');
+            setTimeout('jumpurl()',5000);
+        },'json');
+    }
+    $(function() {
+        $('#reg_check').click(function () {
+            check();
+        });
+        $('#regbutton').click(function () {
+            jscheck();
+        });
+        changeCode();
+    });
+</script>
+</body>
+</html>

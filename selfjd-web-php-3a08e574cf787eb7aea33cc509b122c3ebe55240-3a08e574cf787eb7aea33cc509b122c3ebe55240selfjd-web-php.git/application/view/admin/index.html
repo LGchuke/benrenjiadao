@@ -1,0 +1,97 @@
+{include file="common/header" /}
+<title>设备信息</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统设置 <span class="c-gray en">&gt;</span> 平台人员管理 <a class="btn-refresh btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form action="{:U('admin/index')}" method="get">
+    <div class="text-c"> 姓名查找：<input type="text" class="input-text" style="width:250px" placeholder="输入姓名" id="name" name="name">
+        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+    </div>
+</form>
+    <div class="mt-20">
+        <div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a class="btn btn-primary radius" href="javascript:;" onclick="add('新增用户','{:U('admin/add')}','800')"><i class="Hui-iconfont">&#xe600;</i> 新增用户</a> </span></div>
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th>姓名</th>
+                <th>手机号码</th>
+                <th>用户类型</th>
+                <th>登录名</th>
+                <!--<th>用户角色</th>-->
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$vo.name}</td>
+                <td>{$vo.mobile}</td>
+                <td>{$Think.config.user_type_txt[$vo.user_type]}</td>
+                <td>{$vo.login_name}</td>
+                <td>{$vo.create_at}</td>
+                <td>
+                {switch name="vo.user_type"}
+                    {case value="0"}{/case}
+                    {default}
+                    <a title="编辑" title="编辑" class="label label-primary radius" href="javascript:;" onclick="edit('信息编辑','{:U('admin/edit')}','{$vo.id}')" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-edit2">编辑</i>
+                    </a>
+                    <a title="删除" href="javascript:;" class="label label-danger radius" onclick="del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-del2">删除</i>
+                    </a>
+                {/switch}
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+    function add(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+    function edit(title,url,id,w,h){
+        url = url+'?id='+id;
+        layer_show(title,url,w,h);
+    }
+    function del(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.post("{:U('admin/del')}",{id:id},function (ref) {
+                if(ref.code){
+                    layer.msg(ref.msg,{icon: 2,time:1000});
+                    return false;
+                }
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!',{icon: 1,time:1000});
+            },'json');
+        });
+    }
+</script>
+</body>
+</html>

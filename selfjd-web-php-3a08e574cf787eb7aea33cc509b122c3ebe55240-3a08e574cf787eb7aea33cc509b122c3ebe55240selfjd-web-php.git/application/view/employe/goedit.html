@@ -1,0 +1,289 @@
+{include file="common/header" /}
+<title>新增人员</title>
+<style>
+    label.error {
+        color: #ef392b;
+        float: right;
+        font-size: 12px;
+        margin-top: -30px;
+        position: relative;
+        top: 5px;
+    }
+    .input-text{
+        display:block;
+    }
+    #hiredate-error{
+        margin-right: 10px;
+    }
+</style>
+<link rel="stylesheet" href="/static/uiadmin/lib/webuploader/0.1.5/webuploader.css" type="text/css">
+</head>
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" method="post" action="{:U('employe/doedit')}" id="form-edit">
+        <div style="float: left;width: 75%;">
+            <table class="table table-border table-bordered table-bg" style="width: 100%;">
+                <tbody>
+                <tr class="text-c">
+                    <td style="text-align: right;"><font color="red">*</font>姓名</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="name" name="name" value="{$employe.name}"></td>
+                    <td style="text-align: right;"><font color="red">*</font>工号</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px"  placeholder="输入数字工号" id="job_number" name="job_number" value="{$employe.job_number}" ></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;"><font color="red">*</font>部门</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">选择部门：
+                            <select name="department_id" id="department_id" class="select" validate="required:true" style="width: 153px;">
+                                <option value="">-请选择-</option>
+                                {volist name="deplist" id="item" key="k"}
+                                    <option value="{$item.id}" {$item.id == $employe.department_id ? 'selected="selected"':''}>{$item.name}</option>
+                                {/volist}
+                            </select>
+                        </span>
+                    </td>
+                    <td style="text-align: right;"><font color="red">*</font>性别</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">选择性别：
+                            <select name="sex" id="sex" class="select" style="width: 153px;">
+                                <option value="0" {$employe.sex==0 ? 'selected="selected"':''}>男</option>
+                                <option value="1" {$employe.sex==1 ? 'selected="selected"':''}>女</option>
+                            </select>
+                        </span>
+                    </td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;"><font color="red">*</font>职位</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">选择职位：
+                            <select name="position" id="position" class="select" style="width: 153px;">
+                                <option value="">-请选择-</option>
+                                {volist name="poslist" id="item" key="k"}
+                                <option value="{$item.name}" {$item.name == $employe.position ? 'selected="selected"':''}>{$item.name}</option>
+                                {/volist}
+                            </select>
+                        </span>
+                    </td>
+                    <td style="text-align: right;">婚姻</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">婚姻状况：
+                            <select name="marital_status" id="marital_status" class="select" style="width: 153px;">
+                                <option value="0" {$employe.marital_status==0 ? 'selected="selected"':''}>保密</option>
+                                <option value="1" {$employe.marital_status==1 ? 'selected="selected"':''}>未婚</option>
+                                <option value="2" {$employe.marital_status==2 ? 'selected="selected"':''}>已婚</option>
+                            </select>
+                        </span>
+                    </td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">在职状态</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">在职状态：
+                            <select name="status" id="status" class="select" style="width: 153px;">
+                                <option value="0" {$employe.status==0 ? 'selected="selected"':''}>在职</option>
+                                <option value="1" {$employe.status==1 ? 'selected="selected"':''}>离职</option>
+                            </select>
+                        </span>
+                    </td>
+                    <td style="text-align: right;">学历</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="qualifications" name="qualifications" value="{$employe.qualifications}"></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;"><font color="red">*</font>入职时间</td>
+                    <td style="text-align: left;"><input id="hiredate" name="hiredate" value="{$employe.hiredate}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{\\$dp.\\$D(\'positive_date\')}'})" /></td>
+                    <td style="text-align: right;">转正时间</td>
+                    <td style="text-align: left;"><input id="positive_date" name="positive_date" value="{$employe.positive_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{\\$dp.\\$D(\'hiredate\')}'})" /></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">邮箱</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="email" name="email" value="{$employe.email}"></td>
+                    <td style="text-align: right;">生日</td>
+                    <td style="text-align: left;"><input id="birthday" name="birthday" value="{$employe.birthday}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" /></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">手机</td>
+                    <td style="text-align: left;"><input type="hidden" class="input-text" style="width:230px" readonly="readonly" id="mobile" name="mobile" value="{$employe.mobile}">
+                        {$employe.mobile}</td>
+                    <td style="text-align: right;">毕业院校</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="school" name="school" value="{$employe.school}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <span style="display: block;float: left;">
+                <font color="red">
+                    <p>备注：</p>
+                    <p>1、员工的APP端登录账号和密码均默认为888888；</p>
+                    <p>2、有HR权限的员工需重新登录APP HR权限才能生效。</p>
+                </font>
+            </span>
+        </div>
+        <div style="float: right;width: 25%;text-align: center;">
+            <p><img src="{empty name='employe.avata'}
+            /static/img/blank.png
+            {else/}
+            {:C('img_http_url')}{$employe.avata}
+            {/empty}" width="200px;" height="200px;" id="avata_img"></p>
+            <p>
+                <span id="imglist">更换头像</span>
+            </p>
+            <p>
+                <br>
+                <span class="inline">
+                    <input type="checkbox" id="isHr" name="isHr">
+                    &nbsp;&nbsp;设置为HR权限</span>
+            </p>
+        </div>
+        <br>
+        <input type="hidden" id="id" name="id" value="{$employe.id}">
+        <input type="hidden" value="{$employe.avata}" name="avata" id="avata">
+        <div style="clear: both;text-align: center;padding-top: 50px;">
+            <input class="btn btn-success radius" type="submit" value="保&nbsp;存">
+            <input class="btn btn-danger radius" type="button" onclick="cancel();" value="取&nbsp;消">
+        </div>
+    </form>
+</article>
+{include file="common/footer" /}
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+<script type="application/javascript">
+
+    function cancel(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+    var loading = '';
+    $(document).ready(function(){
+        jQuery.validator.addMethod("isJobNo", function(value,element) {
+            var tt = /^[1-9]\d*$/;
+            return tt.test(value);
+        }, "请输入大于0的整数工号");
+
+        jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            return this.optional(element) || (length == 11 && /^(((13[0-9]{1})||(15[0-9]{1})||(14[0-9]{1})||(17[0-9]{1})||(18[0-9]{1}))+\d{8})$/.test(value));
+        }, "请填写有效的手机号码");
+
+        var isHr = '{$isHr}';
+        if(isHr == 1){
+            $("#isHr").attr("checked", "checked");
+        }
+
+        $("#form-edit").validate({
+            rules: {
+                name: {required: true},
+                job_number: {required: true,digits:true,isJobNo:true},
+                department_id:{required: true},
+                sex: {required: true},
+                position:{required: true},
+                hiredate: {required: true},
+                mobile:{required: true, isMobile:true}
+            },
+            messages:{
+                name:{required:"姓名不能为空"},
+                job_number:{required:"请输入首位非0数字",digits:'请输入首位非0数字',min:'请输入首位非0数字'},
+                department_id:{required:""},
+                sex: {required: '性别不能为空'},
+                position:{required: ''},
+                hiredate: {required: '入职日期不能为空'},
+                mobile:{required: '手机号码不能为空'}
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            onfocusout:function(element){
+                $(element).valid();
+            },
+            success:"valid",
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ref) {
+                    if (ref.code) {
+                        layer.msg(ref.msg);
+                        return ;
+                    } else {
+                        layer.msg(ref.msg);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.$('.btn-refresh').click();
+                        window.parent.location.reload();
+                        parent.layer.close(index);
+                    }
+                }, 'json');
+            },
+            invalidHandler: function (form, validator) {  //不通过回调
+                return false;
+            }
+        });
+        // 图像上传
+        var uploader = WebUploader.create({
+            pick: {id: '#imglist', multiple: false,innerHTML: '更换头像'},
+            auto: true,
+            title: 'Images',
+            swf: '/static/uiadmin/lib/webuploader/0.1.5/Uploader.swf',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*',
+            server: "{:U('init/uploadimg')}",
+            fileSingleSizeLimit: 2 * 1024 * 1024,
+            fileSizeLimit: 2 * 1024 * 1024,
+            thumb: {
+                width: 200,
+                height: 200,
+                quality: 70,
+                allowMagnify: true,
+                crop: true,
+                type: 'image/jpeg'
+            },
+            compress: {
+                quality: 90,
+                allowMagnify: false,
+                crop: false,
+                preserveHeaders: true,
+                noCompressIfLarger: false,
+                // 单位字节，如果图片大小小于300kb，不会采用压缩。
+                compressSize: 300 * 1024
+            },
+            fileNumLimit: 1,
+        });
+        uploader.on('fileQueued', function (file) {
+            uploader.makeThumb(file, function (error, ret) {
+                if (error) {
+                    layer.msg('浏览器不支持图片预览', {icon: 5});
+                    return;
+                } else {
+                    $('#avata_img').attr('src', ret);
+                }
+            });
+        });
+        uploader.on('uploadStart', function () {
+            loadind = layer.load(1, {shade: [0.8, '#393D49']});
+        });
+        uploader.on('uploadError', function (file, reason) {
+            layer.close(loadind);
+            layer.msg('图片上传错误[' + reason + ']', {icon: 5});
+        });
+        uploader.on('error', function (type) {
+            if (type == 'Q_EXCEED_SIZE_LIMIT') {
+                layer.msg('上传的图片不能超过2MB', {icon: 5});
+            } else if (type == 'Q_EXCEED_NUM_LIMIT') {
+                layer.msg('上传的图片只能上传一张', {icon: 5});
+            } else if (type == 'Q_TYPE_DENIED') {
+                layer.msg('上传的文件类型不对', {icon: 5});
+            }
+            return false;
+        });
+        uploader.on('uploadSuccess', function (file, data) {
+            layer.close(loadind);
+            if (data.code != '0') {
+                layer.msg(data.msg, {icon: 5});
+                return false;
+            } else {
+                layer.msg('图片上传成功！', {icon: 1});
+                $('#avata').val(data.msg);
+            }
+        });
+    });
+</script>
+</body>
+</html>

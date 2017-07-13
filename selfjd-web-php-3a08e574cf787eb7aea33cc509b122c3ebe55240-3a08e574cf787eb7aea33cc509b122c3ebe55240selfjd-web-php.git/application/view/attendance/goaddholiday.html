@@ -1,0 +1,99 @@
+{include file="common/header" /}
+<title></title>
+</head>
+<body>
+<article class="page-container">
+    <form action="{:U('attendance/saveHoliday')}" method="post" class="form form-horizontal" id="form-postion-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>假期名称：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="" placeholder="" id="name" name="name" maxlength="20" nullmsg="假期名称不能为空">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>假期类型：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <span class="select-box inline">
+                        <select name="type" id="type" class="select">
+                            <option value="">-请选择-</option>
+                            <option value="1" >法定假日</option>
+                            <option value="2" >企业假日</option>
+                            <option value="3" >周末</option>
+                            <option value="4" >其他</option>
+                        </select>
+                </span>
+            </div>
+        </div>
+
+        <div class="row cl" id="date_ho">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>日期：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input id="ho_date" name="ho_date" value="" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" />
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-success radius" type="submit" value="保&nbsp;存">
+            </div>
+        </div>
+    </form>
+</article>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript">
+    function changtype(){
+        if($("#type").val() == "3" || $("#type").val() == "4"){
+            $("#ho_date").val("");
+            $("#date_ho").hide();
+        }else{
+            $("#date_ho").show();
+        }
+    }
+
+    $(function(){
+        //changtype();
+        $("#form-postion-add").validate({
+            rules: {
+                name: {required: true},
+                ho_date:{required: true},
+                type:{required: true}
+            },
+            messages:{
+                name:{required:"类型名称不能为空"},
+                ho_date:{required: "日期不能为空"},
+                type:{required:"假期类型不能为空"}
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            /*onfocusout:function(element){
+                $(element).valid();
+            },*/
+            success:"valid",
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ref) {
+                    if (ref.code) {
+                        layer.msg(ref.msg);
+                        return false;
+                    } else {
+                        layer.msg(ref.msg);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.$('.btn-refresh').click();
+                        window.parent.location.reload();
+                        parent.layer.close(index);
+                    }
+                }, 'json');
+            },
+            invalidHandler: function (form, validator) {  //不通过回调
+                return false;
+            }
+        });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

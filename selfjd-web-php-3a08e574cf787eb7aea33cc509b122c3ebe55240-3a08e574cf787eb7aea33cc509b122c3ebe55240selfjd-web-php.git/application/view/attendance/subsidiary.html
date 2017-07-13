@@ -1,0 +1,60 @@
+{include file="common/header" /}
+<title>考勤统计</title>
+</head>
+<body>
+<div class="page-container">
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th>日期</th>
+                <th>签到时间</th>
+                <th>签退时间</th>
+                <th>请假</th>
+                <th>出差</th>
+                <th>加班</th>
+                <th>调休</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$vo.date}</td>
+                <td>{$vo.signinTime}</td>
+                <td>{$vo.signoutTime}</td>
+                <td>{$vo.leaveHours}</td>
+                <td>{$vo.travelHours}</td>
+                <td>{$vo.overReal}</td>
+                <td>{$vo.daysOffHours}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+
+body,h1,h2,h3,h4,dl,dd,ul,p,form,input,textarea,select{
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	font-family: arial;
+}
+input {background: none; border: none;}
+li{ list-style: none;}
+a{ text-decoration: none;}
+img{
+	border: none;
+	vertical-align: top;
+}
+
+.bradius10{
+	-webkit-border-radius: 10px;
+	   -moz-border-radius: 10px;
+			border-radius: 10px;
+}
+.bradius5{
+	-webkit-border-radius:5px;
+	   -moz-border-radius: 5px;
+			border-radius: 5px;
+}
+.bradius3{
+	-webkit-border-radius:3px;
+	   -moz-border-radius: 3px;
+			border-radius: 3px;
+}
+
+.clear{ zoom: 1;}
+.clear:after{
+	content: '';
+	display: block;
+	clear: both;
+}
+
+body{ background-color: #ffffff;}
+.container{
+	width: 1300px;
+	margin: 0 auto;
+	position: relative;
+}
+.loginpage .header{
+	height: 90px;
+	padding-top: 12px;
+}
+.loginpage .logo{
+	display: block;
+	background: url(../img/logo.png) no-repeat left 0;
+	padding-left: 62px;
+	padding-top: 12px;
+	height: 48px;
+}
+.loginpage .header span{ display: block;}
+.loginpage .header .s1{
+	color: #333232;
+	font-size: 20px;
+	line-height: 28px;
+}
+.loginpage .header .s2{
+	color: #757373;
+	line-height: 14px;
+}
+
+.loginbox{
+	width: 100%;
+	height: 503px;
+	background: url(../img/indexBg.png) no-repeat;
+	background-size: 100% 100%;
+	
+}
+.loginbox .title{
+	color: #FFFFFF;
+	text-align: center;
+	width: 500px;
+	position: absolute;
+	top: 120px;
+	left: 0;
+}
+.loginbox .title p{
+	font-size: 56px;
+	margin: 0 auto;
+	line-height: 88px;
+}
+.loginbox .title .bg{
+	position: absolute;
+	left: 100px;
+	top: 192px;
+	background-color: #8e8d8c;
+	filter:alpha(opacity = 60);
+	opacity: 0.6;
+	width: 290px;
+	height: 52px;
+	line-height: 52px;
+}
+.loginbox .title span{
+	position: absolute;
+	left: 100px;
+	top: 192px;
+	font-size: 26px;
+	width: 290px;
+	height: 52px;
+	line-height: 52px;
+}
+.loginbox .content{
+	position: absolute;
+	top: 150px;
+	right: 138px;
+	width: 324px;
+	text-align: left;
+}
+.loginbox .txt{
+	border: 1px solid #fff;
+	width: 318px;
+  	height: 32px;
+  	line-height: 32px;
+  	text-indent: 20px;
+  	color: #FFFFFF;
+  	font-size: 14px;
+  	margin-top: 30px;
+  	display: block;
+}
+.loginbox ::-webkit-input-placeholder {  color: #fff; }
+.loginbox :-moz-placeholder { color: #fff; }
+.loginbox ::-moz-placeholder { color: #fff; }
+.loginbox :-ms-input-placeholder { color: #fff; }
+.loginbox .btn{
+	color: #fff;
+	font-size: 16px;
+	text-align: center;
+	height: 34px;
+	line-height: 34px;
+	cursor: pointer;
+	margin-top: 6px;
+}
+.loginbox .btnreg{
+	width: 124px;
+	background-color: #bcbebe;
+}
+.loginbox .btnlog{
+	background-color: #1acefd;
+	width: 162px;
+	margin-left: 26px;
+}
+.loginbox label{
+	/*display: block;*/
+	/*margin: 8px 0 5px;*/
+    margin-right: 20px;
+    margin-top: -28px;
+	height: 20px;
+	line-height: 20px;
+	color: #ec4844;
+    float: right;
+	/*width: 150px;*/
+	cursor: pointer;
+	/*background: url(../img/checked.png) no-repeat 0 -19px;*/
+}
+.loginbox .checked { background: url(../img/checked.png) no-repeat 0 4px; }
+.loginbox label input{vertical-align: middle; visibility: hidden; width: 16px; }
+
+
+.codebox{
+	margin-top: 124px;
+	height: 136px;
+	margin-bottom: 100px;
+}
+.codebox .applecode{
+	float: left;
+	width: 490px;
+	margin-left: 60px;
+	height: 136px;
+	border-right: 1px solid #a4a5a5;
+	background: url(../img/phoneicon.png) no-repeat left 18px;
+	padding-left: 90px;
+}
+.codebox span{
+	color: #7d7a7a;
+	font-size: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 20px;
+	line-height: 20px;
+	margin-top: 64px;
+}
+.codebox img{
+	width: 106px;
+	height: 106px;
+	margin-top: 22px;
+}
+.codebox .andcode{
+	width: 406px;
+	height: 136px;
+	float: left;
+	margin-left: 100px;
+	background: url(../img/phoneicon.png) no-repeat 0 -92px;
+	padding-left: 90px;
+}
+.copyright{
+	margin: 165px 0 130px;
+	border: solid #c9cbcb;
+	border-width: 1px 0;
+	padding: 14px 0 10px;
+}
+.copyright p{
+	line-height: 38px;
+	color: #6e6d6d;
+	font-size: 14px;
+	width: 560px;
+	margin: 0 320px;
+}
+
+
+/* 注册界面 */
+.loginpage1 .header{
+	height: 53px;
+	padding-top: 15px;
+	width: 100%;
+	background-color: #1acefd;
+}
+.loginpage1 .header a{
+	display: block;
+	color: #fff;
+	font-size: 16px;
+	background: url(../img/login2.png) no-repeat 0 0;
+	padding: 14px 0 10px 48px;
+	margin-left: 160px;
+}
+.regstep {
+	margin: 90px auto 0;
+	width: 1175px;
+}
+.regstepnav {
+	border:1px solid #9e9e9e;
+	height: 45px;
+	line-height: 45px;
+	width: 1173px;
+}
+.regstepnav li { float: left; }
+.regstepnav a {
+	display: block;
+	color: #939495;
+	font-size: 14px;
+	text-align: center;width: 366px;
+	padding-right: 25px;
+}
+.regstepnav .active{
+	background: url(../img/navBg.png) no-repeat 0 0;
+	color: #FFFFFF;
+}
+.regstepnav .active2{ background-color: #5999d6; color: #FFFFFF; }
+
+.regbox {
+	border:1px solid #9e9e9e;
+	margin-top: 44px;
+}
+.telbox { padding:76px 0 150px 324px; }
+.infobox { padding:26px 0 62px 324px; }
+.regbox em{
+	color: #ec5c41;
+	font-size: 12px;
+	padding-right: 6px;
+	font-style: normal;
+	vertical-align: middle;
+}
+.regbox .reg-lb{
+	height: 34px;
+	margin-top: 34px;
+	position: relative;
+}
+.telbox .reg-lb{ padding-left: 100px; }
+.infobox .reg-lb{ padding-left: 130px;}
+.regbox label{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 34px;
+	line-height: 34px;
+	font-size: 14px;
+	color: #393939;
+}
+.telbox label{ width: 100px;}
+.infobox label{ width: 110px; text-align: right;}
+
+.regbox input{ 
+	height: 34px; 
+	line-height: 34px;
+	padding: 0 5px;
+	font-size: 14px;
+	color: #8c8a8a;
+}
+.regbox .txt{
+	width: 318px;
+	border: 1px solid #9f9f9f;
+}
+.infobox .txt{ text-indent:15px;}
+.telbox .txt2{
+	border: 1px solid #9f9f9f;
+	width: 158px;
+	margin-right: 18px;
+}
+.infobox .txt2{ width: 170px;}
+.telbox .btn{
+	background-color: #29d2f9;
+	padding: 0 8px;
+	color: #fff;
+	cursor: pointer;
+}
+.regbox .reg-lb2{ margin-top: 46px; }
+.telbox .reg-lb2{ padding-left: 100px; }
+.infobox .reg-lb2{ padding-left: 130px; }
+.infobox .yzm{ 
+	width: 60px; 
+	height: 24px;
+	margin: 5px 20px 0 8px;
+}
+.infobox .bgnyzm{
+	color: #2dd5f5;
+	display: inline-block;
+	font-size: 14px;
+	vertical-align: middle;
+}
+.regbox .btn2{
+	height: 40px;
+	width: 130px;
+	text-align: center;
+	line-height: 40px;
+	color: #fff;
+	background-color: #828282;
+	font-size: 14px;
+	cursor: pointer;
+}
+.regbox .regok{
+	font-size: 54px;
+	margin: 196px 0;
+	color: #444444;
+	text-align: center;
+}
+
+#addlist{ height: 34px; }
+#addlist a,#addlist span{ 
+	display: inline-block;
+	color: #000000;
+	font-size: 14px;
+}
+#addlist dd{
+	float: left;
+	height: 34px;
+	position: relative;
+	width: 106px;
+	cursor: pointer;
+}
+#addlist .magrinlr{ margin: 0 7px;}
+#addlist ul{
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	border: 1px solid #9f9f9f;
+	padding: 6px 2px;
+	display: none;
+	background-color: #fff;
+}
+#addlist li{
+	height: 22px;
+	line-height: 22px;
+	text-indent: 6px;
+	width: 100px;
+}
+#addlist .active{ background-color: #82eafe;}
+#addlist span{
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 34px;
+	line-height: 34px;
+	width: 84px;
+	text-indent: 14px;
+	padding-right: 20px;
+	border: 1px solid #9f9f9f;
+}
+#addlist a{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 34px;
+	width: 20px;
+	background: url(../img/arrowicon1.png) no-repeat center;
+}

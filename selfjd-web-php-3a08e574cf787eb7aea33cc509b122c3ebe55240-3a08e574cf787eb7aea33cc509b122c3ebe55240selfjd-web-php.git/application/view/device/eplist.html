@@ -1,0 +1,71 @@
+{include file="common/header" /}
+<title>设备信息</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 设备管理 <span class="c-gray en">&gt;</span> 企业设备管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form action="{:U('device/eplist')}" method="get">
+        <div class="text-c"> 企业名称：<input type="text" class="input-text" style="width:250px" placeholder="输入企业名称" id="name" name="name">
+            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+        </div>
+    </form>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="80">公司名称</th>
+                <th width="100">设备名称</th>
+                <th width="40">创建时间</th>
+                <th width="90">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list.results" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$vo.name}</td>
+                <td>{$vo.address}</td>
+                <td>{$vo.createdTime}</td>
+                <td>
+                    <a href="{:U('device/blist',['cid'=>$vo.id])}">
+                        <!--<a onclick="showDevices('{$vo.id}')" href="javascript:;">-->
+                        <font color="#6495ed"><i class="Hui-iconfont Hui-iconfont-search2"></i>查看设备</font>
+                    </a>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+    function showDevices(id){
+//        var url = "{:U('device/blist',['cid'=>$vo.id])}";
+        var url = "{:U('device/blist')}" + "?cid="+id;
+        layer_show("查看设备",url,1200,700);
+    }
+</script>
+</body>
+</html>

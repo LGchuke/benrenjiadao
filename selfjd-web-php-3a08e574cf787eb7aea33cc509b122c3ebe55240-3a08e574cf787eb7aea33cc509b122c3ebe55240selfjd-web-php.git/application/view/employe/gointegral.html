@@ -1,0 +1,163 @@
+{include file="common/header" /}
+<title>充值积分</title>
+</head>
+<body>
+<article class="page-container">
+        <div style="float: left;width: 75%;">
+            <table class="table table-border table-bordered table-bg" style="width: 100%;">
+                <tbody>
+                <tr class="text-c">
+                    <td style="text-align: right;">姓名</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="name" name="name" value="{$employe.name}"></td>
+                    <td style="text-align: right;">工号</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="job_number" name="job_number" value="{$employe.job_number}" ></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">部门</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">选择部门：
+                            <select name="department_id" id="department_id" class="select" style="width: 153px;">
+                                {volist name="deplist" id="item" key="k"}
+                                    <option value="{$item.id}" {$item.id == $employe.department_id ? 'selected="selected"':''}>{$item.name}</option>
+                                {/volist}
+                            </select>
+                        </span>
+                    </td>
+                    <td style="text-align: right;">性别</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">选择性别：
+                            <select name="sex" id="sex" class="select" style="width: 153px;">
+                                <option value="0" {$employe.sex==0 ? 'selected="selected"':''}>男</option>
+                                <option value="1" {$employe.sex==1 ? 'selected="selected"':''}>女</option>
+                            </select>
+                        </span>
+                    </td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">职位</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">选择职位：
+                            <select name="position" id="position" class="select" style="width: 153px;">
+                                {volist name="poslist" id="item" key="k"}
+                                <option value="{$item.name}" {$item.name == $employe.position ? 'selected="selected"':''}>{$item.name}</option>
+                                {/volist}
+                            </select>
+                        </span>
+                    </td>
+                    <td style="text-align: right;">婚姻</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">婚姻状况：
+                            <select name="marital_status" id="marital_status" class="select" style="width: 153px;">
+                                <option value="0" {$employe.marital_status==0 ? 'selected="selected"':''}>保密</option>
+                                <option value="1" {$employe.marital_status==1 ? 'selected="selected"':''}>未婚</option>
+                                <option value="2" {$employe.marital_status==2 ? 'selected="selected"':''}>已婚</option>
+                            </select>
+                        </span>
+                    </td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">在职状态</td>
+                    <td style="text-align: left;">
+                        <span class="select-box inline">在职状态：
+                            <select name="status" id="status" class="select" style="width: 153px;">
+                                <option value="0" {$employe.status==0 ? 'selected="selected"':''}>在职</option>
+                                <option value="1" {$employe.status==1 ? 'selected="selected"':''}>离职</option>
+                            </select>
+                        </span>
+                    </td>
+                    <td style="text-align: right;">学历</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="qualifications" name="qualifications" value="{$employe.qualifications}"></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">入职时间</td>
+                    <td style="text-align: left;"><input id="hiredate" name="hiredate" value="{$employe.hiredate}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" /></td>
+                    <td style="text-align: right;">转正时间</td>
+                    <td style="text-align: left;"><input id="positive_date" name="positive_date" value="{$employe.positive_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" /></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">邮箱</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="email" name="email" value="{$employe.email}"></td>
+                    <td style="text-align: right;">生日</td>
+                    <td style="text-align: left;"><input id="birthday" name="birthday" value="{$employe.birthday}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" /></td>
+                </tr>
+                <tr class="text-c">
+                    <td style="text-align: right;">手机</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="mobile" name="mobile" value="{$employe.mobile}"></td>
+                    <td style="text-align: right;">毕业院校</td>
+                    <td style="text-align: left;"><input type="text" class="input-text" style="width:230px" id="school" name="school" value="{$employe.school}"></td>
+                </tr>
+                <form action="{:U('employe/dointegral')}" method="post" id="form-edit">
+                    <input type="hidden" id="id" name="id" value="{$employe.id}">
+                    <tr class="text-c">
+                        <td style="text-align: right;">充值积分</td>
+                        <td style="text-align: left;" colspan="3"><input type="text" placeholder="输入充值积分" class="input-text" style="width:230px" id="integral" name="integral"></td>
+                    </tr>
+                </form>
+                </tbody>
+            </table>
+        </div>
+        <div style="float: right;width: 25%;text-align: center;">
+            <p><img src="/static/img/blank.png" width="200px;" height="200px;"></p>
+        </div>
+        <br>
+        <div style="clear: both;text-align: center;padding-top: 50px;">
+            <input class="btn btn-success radius" type="button" value="保&nbsp;存" onclick="dointegral();">
+            <input class="btn btn-danger radius" type="button" value="取&nbsp;消" onclick="cancel();">
+        </div>
+</article>
+{include file="common/footer" /}
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+<script type="application/javascript">
+    $(document).ready(function(){
+        $("input[type='text']").each(function(){
+            $(this).attr("disabled", true);
+        });
+        $("select[class='select']").each(function(){
+            $(this).attr("disabled", true);
+        });
+        $("input[class='input-text Wdate']").each(function(){
+            $(this).attr("disabled", true);
+        });
+        $("#integral").attr("disabled", false);
+
+    });
+    function dointegral(){
+        var reg = /^[1-9]\d*$/;
+        var flag = reg.test($("#integral").val());
+        if(!flag){
+            alert("请输入大于或等于0积分值!");
+            return ;
+        }
+        /*$("#form-edit").submit(function(){
+            alert();
+        });*/
+        $.ajax({
+            type: 'POST',
+            data: {"id":$("#id").val(), "integral":$("#integral").val()},
+            url: "{:U('employe/dointegral')}",
+            success: function (info) {
+                if(info == 'ok'){
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.$('.btn-refresh').click();
+                    window.parent.location.reload();
+                    parent.layer.close(index);
+                }else{
+                    alert("充值失败，企业积分余额不足!");
+                    return ;
+                }
+            }
+        });
+
+    }
+    function cancel(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+</script>
+</body>
+</html>

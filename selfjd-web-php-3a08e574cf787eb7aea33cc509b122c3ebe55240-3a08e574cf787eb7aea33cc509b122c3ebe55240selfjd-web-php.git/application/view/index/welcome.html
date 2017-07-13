@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/static/uiadmin/lib/html5.js"></script>
+    <script type="text/javascript" src="/static/uiadmin/lib/PIE_IE678.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/static/uiadmin/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/uiadmin/static/h-ui/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="/static/uiadmin/lib/Hui-iconfont/1.0.7/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="/static/uiadmin/static/h-ui/css/style.css" />
+
+    <link href="/static/css/radialindicator.css"  rel="stylesheet" type="text/css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="/static/uiadmin/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>我的桌面</title>
+    <style>
+        .btn.size-XL{
+            height: 123px;
+        }
+        .ifs{
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="page-container">
+    <div>
+        <div style="float: left;width: 60%;">欢迎您，<span class="f-14">{$entname}</span></div>
+        <div style="float:right;width: 30%;line-height: 20px;">
+            <span style="display: block;float: left;">当前时间：</span><div id="clock" style="float: left;"></div>
+        </div>
+    </div>
+    <br>
+    <br>
+    本月考勤比重
+    <hr>
+    <div style="width: 80%;text-align: center;padding-top: 50px;margin: 0 auto;">
+    <table class="table table-bg">
+        <tr class="text-c">
+            <td><div id="indicatorContainer"></div><p>正常</p></td>
+            <td><div id="indicatorContainer2"></div><p>迟到</p></td>
+            <td><div id="indicatorContainer3"></div><p>早退</p></td>
+            <td><div id="indicatorContainer4"></div><p>请假</p></td>
+        </tr>
+    </table>
+    </div>
+    <!--<br>
+    管理员快捷入口
+    <hr>
+    <br>
+    <div class="row-fluid">
+        <p>
+            <a  class="btn btn-primary size-XL radius" >
+                <span><i class="Hui-iconfont ifs">&#xe61d;</i><br>部门设置</span>
+            </a>
+
+            <a href="#" class="btn btn-primary size-XL radius">
+                <span><i class="Hui-iconfont ifs">&#xe604;</i><br>新增员工</span>
+            </a>
+
+            <a href="#" class="btn btn-primary size-XL radius">
+                <span><i class="Hui-iconfont ifs">&#xe62e;</i><br>系统设置</span>
+            </a>
+
+            <a href="#" class="btn btn-primary size-XL radius">
+                <span><i class="Hui-iconfont ifs">&#xe616;</i><br>信息管理</span>
+            </a>
+        </p>
+    </div>-->
+</div>
+<script type="text/javascript" src="/static/uiadmin/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="/static/js/myDigitClock.js"></script>
+<script src="/static/js/radialIndicator.js"></script>
+</body>
+<script>
+    $(document).ready(function(){
+        $("#clock").MyDigitClock({
+            fontSize:20,
+            fontFamily:"Century gothic",
+            fontColor: "#000",
+            fontWeight:"bold",
+            background:'#fff',
+            bShowHeartBeat:true
+        });
+
+        $('#indicatorContainer').radialIndicator({
+            barColor: {
+                0: '#FF0000',
+                33: '#FFFF00',
+                66: '#0066FF',
+                100: '#33CC33'
+            },
+            //barWidth: 10,
+            initValue: 80,
+            //roundCorner : false,
+            percentage: true
+        });
+        $('#indicatorContainer2').radialIndicator({
+            barColor: {
+                0: '#FF0000',
+                33: '#FFFF00',
+                66: '#0066FF',
+                100: '#33CC33'
+            },
+            initValue: 5,
+            percentage: true
+        }).data('radialIndicator');
+        $('#indicatorContainer3').radialIndicator({
+            barColor: {
+                0: '#FF0000',
+                33: '#FFFF00',
+                66: '#0066FF',
+                100: '#33CC33'
+            },
+            initValue: 22,
+            percentage: true
+        }).data('radialIndicator');
+        $('#indicatorContainer4').radialIndicator({
+            barColor: {
+                0: '#FF0000',
+                33: '#FFFF00',
+                66: '#0066FF',
+                100: '#33CC33'
+            },
+            initValue: 12,
+            percentage: true
+        }).data('radialIndicator');
+    });
+</script>
+</html>

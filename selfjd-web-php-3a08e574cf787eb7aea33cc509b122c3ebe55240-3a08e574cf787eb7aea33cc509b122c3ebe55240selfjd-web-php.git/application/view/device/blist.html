@@ -1,0 +1,122 @@
+{include file="common/header" /}
+<title>设备信息</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 设备管理 <span class="c-gray en">&gt;</span>企业设备管理<span class="c-gray en">&gt;</span>设备绑定 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form action="{:U('device/blist')}" method="get">
+        <input type="hidden" name="cid" value="{$cid}" id="cid">
+        <div class="text-c"> 设备名称：<input type="text" class="input-text" style="width:250px" placeholder="输入设备名称" id="name" name="name">
+            序列号：<input type="text" class="input-text" style="width:250px" placeholder="输入设备序列号" id="serial_number" name="serial_number">
+            绑定状态：<span class="select-box inline"><select name="bound_status" id="bound_status" class="select">
+            <option value="-1">全部分类</option>
+            <option value="1">已绑定</option>
+            <option value="0">未绑定</option>
+        </select></span>
+            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+            <button type="button" onclick="history.go(-1);" class="btn btn-primary radius">
+                <i class="Hui-iconfont">&#xe66b;</i>
+                返回上一级</button>
+        </div>
+    </form>
+    <div class="mt-20">
+        <div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a class="btn btn-primary radius" href="javascript:;" onclick="add('新增绑定','{:U('device/add')}','800')"><i class="Hui-iconfont">&#xe600;</i> 新增绑定</a> </span><span class="r">当前企业：<strong>{$name}</strong></span></div>
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="20">序号</th>
+                <th width="80">设备型号</th>
+                <th width="80">企业设备名称</th>
+                <th width="200">序列号</th>
+                <th width="50">版本</th>
+                <th width="100">绑定时间</th>
+                <th width="30">绑定状态</th>
+                <th width="30">设备联网状态</th>
+                <th width="70">IP</th>
+                <th width="70">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list.results" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$k}</td>
+                <td>{$vo.name}</td>
+                <td>{$vo.location}</td>
+                <td>{$vo.serialNumber}</td>
+                <td>{$vo.softwareVersion}</td>
+                <td>{$vo.updateTime}</td>
+                <td class="td-status">
+                    {empty name="vo.boundStatus"}
+                    <span class="label label-error radius">未绑定</span>
+                    {else /}
+                    <span class="label label-success radius">已绑定</span>
+                    {/empty}
+                </td>
+                <td class="td-status">{empty name="vo.netStatus"}
+                    <span class="label label-error radius">未联网</span>
+                    {else /}
+                    <span class="label label-success radius">已联网</span>
+                    {/empty}</td>
+                <td>{$vo.ip}</td>
+                <td class="f-14 td-manage">
+                    {empty name="vo.boundStatus"}
+                    <a style="text-decoration:none" class="ml-5 label label-primary radius" onClick="del(this,'{$vo.id}',1)" href="javascript:;" title="绑定"><i class="Hui-iconfont Hui-iconfont-suoding">绑定</i></a>
+                    {else /}
+                    <a style="text-decoration:none" class="ml-5 label label-danger radius" onClick="del(this,'{$vo.id}',0)" href="javascript:;" title="解绑"><i class="Hui-iconfont Hui-iconfont-jiesuo">解绑</i></a>
+                    {/empty}
+                    <a style="text-decoration:none" class="ml-5 label label-primary radius" onClick="edit('设备编辑','{:U('device/edit')}','{$vo.id}','800','500')" href="javascript:;" title="修改"><i class="Hui-iconfont">&#xe6df;修改</i></a></td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+    function del(obj,id,type){
+        var msg = type?'确认要绑定吗？':'确认要解绑吗？';
+        layer.confirm(msg,function(index){
+            $.post("{:U('device/change')}",{id:id,cid:'{$cid}',type:type},function (ref) {
+                if(ref.code){
+                    layer.msg(ref.msg,{icon: 2,time:1000});
+                    return false;
+                }
+                layer.msg((type?'已经绑定':'已经解绑'),{icon: 1,time:1000});
+                location.replace(location.href);
+            },'json');
+        });
+    }
+
+    function edit(title,url,id,w,h){
+        url = url+'?id='+id+'&cid={$cid}';
+        layer_show(title,url,w,h);
+    }
+    function add(title,url,w,h) {
+        url = url+'?cid={$cid}';
+        layer_show(title,url,w,h);
+    }
+</script>
+</body>
+</html>

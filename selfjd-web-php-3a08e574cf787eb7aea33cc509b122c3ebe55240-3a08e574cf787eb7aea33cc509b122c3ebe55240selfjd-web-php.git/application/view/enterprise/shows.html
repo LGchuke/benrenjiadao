@@ -1,0 +1,158 @@
+{include file="common/header" /}
+<title>信息详情-企业管理</title>
+<link rel="stylesheet" href="/static/css/viewer.min.css">
+
+</head>
+<body>
+<div class="page-container form form-horizontal" style="width: 350px;float: left;">
+    <div class="row cl">
+        <label class="form-label col-xs-5 col-sm-5">登录账号：</label>
+        <div class="formControls col-xs-7 col-sm-7">{$login_name}</div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-5 col-sm-5">企业积分：</label>
+        <div class="formControls col-xs-7 col-sm-7">
+            {$info.result.integral}
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-5 col-sm-5">公司名称：</label>
+        <div class="formControls col-xs-7 col-sm-7">
+            {$info.result.name}
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-6 col-sm-5">手机号码：</label>
+        <div class="formControls col-xs-6 col-sm-7">
+            {$info.result.mobile}
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-5 col-sm-5">企业邮箱：</label>
+        <div class="formControls col-xs-7 col-sm-7">{$info.result.email}</div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-5">联系电话：</label>
+        <div class="formControls col-xs-8 col-sm-7">
+            {$info.result.teliphone}
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-5">人员规模：</label>
+        <div class="formControls col-xs-8 col-sm-7">
+            {$info.result.scale}
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-5">地址：</label>
+        <div class="formControls col-xs-8 col-sm-7">
+            {$info.result.address}
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-5">公司简介：</label>
+        <div class="formControls col-xs-8 col-sm-7">
+            {$info.result.summary}
+        </div>
+    </div>
+    {if condition="$action eq '2'"}
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-5">充值积分：</label>
+        <div class="formControls col-xs-8 col-sm-7">
+            <input type="number" name="jifen" id="jifen" value="0" min="0" />
+        </div>
+    </div>
+    {/if}
+    <div class="row cl">
+        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+            {if condition="$action eq '1'"}
+                {if condition="$info.result.status eq '2'"}
+                    <button onclick="pass_check(1);" class="btn btn-success radius kqation" type="submit">审核通过</button>
+                    <button onclick="pass_check(0);" class="btn btn-secondary radius kqation" type="submit">审核不通过</button>
+                {/if}
+            {else /}
+            <button onclick="jifen_save();" class="btn btn-primary radius" type="button">确认充值</button>
+            {/if}
+        </div>
+    </div>
+</div>
+<div style="float: right;width: 350px;text-align: left;padding-top: 43px;">
+    <div class="row cl">
+        <div class="col-xs-12 panel">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-4">公司logo：</label>
+                <div class="formControls col-xs-9 col-sm-9" style="text-align: left;" id="lgfd">
+                    {if condition="$info.result.logo eq null"}
+                    <img src="/static/img/blank.png" width="200px;" height="150px;" id="avata_img">
+                    {/if}
+                    {if condition="$info.result.logo neq null"}
+                    <img src="{:C('img_http_url')}{$info.result.logo}" id="iminfo" width="188px;" height="188px;" class="img-responsive thumbnail" alt="公司logo"><br/>
+                    {/if}
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 panel">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-4">营业执照：</label>
+                <div class="formControls col-xs-9 col-sm-9" style="text-align: left;" id="yzfd">
+                    {if condition="$info.result.busiessLicense eq null"}
+                    <img src="/static/img/blank.png" width="200px;" height="150px;" id="avata_img">
+                    {/if}
+                    {if condition="$info.result.busiessLicense neq null"}
+                    <img src="{:C('img_http_url')}{$info.result.busiessLicense}" width="188px;" height="188px;" class="img-responsive thumbnail" alt="营业执照" id="yingye">
+                    {/if}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script src="/static/js/viewer.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var opt = {
+            button:true,
+            navbar:false,
+            title:false,
+            toolbar:false,
+            tooltop:false,
+            rotatable:false,
+            transition:false,
+            fullscreen:true,
+            keyboard:false
+        };
+        $('#yzfd').viewer(opt);
+        $('#lgfd').viewer(opt);
+    });
+
+    function pass_check(type) {
+        var url = type?"{:U('enterprise/pass')}":"{:U('enterprise/unpass')}";
+        $.post(url,{id:"{$info.result.id}"},function (ref) {
+            if(ref.code){
+                layer.msg(ref.msg,{icon: 2,time:1000});
+                return ;
+            }else{
+                layer.msg(ref.msg,{icon:1,time:1000});
+                var index = parent.layer.getFrameIndex(window.name);
+                window.parent.location.reload();
+                parent.layer.close(index);
+            }
+        });
+    }
+    function jifen_save() {
+        $.post("{:U('enterprise/points')}",{id:"{$info.result.id}",num:$('#jifen').val()},function (ref) {
+            if(ref.code){
+                layer.msg(ref.msg,{icon: 2,time:2000});
+                return false;
+            }else{
+                layer.msg('充值成功',{icon:1,time:2000});
+                var index = parent.layer.getFrameIndex(window.name);
+                window.parent.location.reload();
+                parent.layer.close(index);
+            }
+        });
+    }
+</script>
+</body>
+</html>

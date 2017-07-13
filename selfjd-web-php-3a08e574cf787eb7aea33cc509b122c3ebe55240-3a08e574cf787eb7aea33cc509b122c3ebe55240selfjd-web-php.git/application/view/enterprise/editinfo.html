@@ -1,0 +1,340 @@
+{include file="common/header" /}
+<title>信息详情-企业管理</title>
+<link rel="stylesheet" href="/static/uiadmin/lib/webuploader/0.1.5/webuploader.css" type="text/css">
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 信息管理 <span
+        class="c-gray en">&gt;</span> 企业信息 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form action="{:U('enterprise/save')}" method="post" accept-charset="utf-8" class="form form-horizontal" id="edit-form">
+        <div class="text-l">
+            <button type="submit" class="btn btn-success radius"><i class="Hui-iconfont">&#xe632;</i>保存</button>
+            <a href="{:U('enterprise/info')}" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe66b;</i>取消</a>
+        </div>
+        <input type="hidden" name="id" value="{$info.result.id}">
+        <input type="hidden" name="logofile" id="logofile" value="">
+        <input type="hidden" name="qiyefile" id="qiyefile" value="">
+        <div class="row cl">
+            <div class="col-xs-6">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">登录账号：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="hidden" class="input-text" value="{$login_name}"
+                               id="qiye"
+                               name="qiye" placeholder="">
+                        <span>{$login_name}</span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">企业积分：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="hidden" class="input-text" value="{$info.result.integral}"
+                               placeholder="{$info.result.integral}" id="integral" name="integral">
+                        <span>{$info.result.integral}</span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">公司名称：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="hidden" class="input-text" value="{$info.result.name}" id="name" name="name"
+                               placeholder="{$info.result.name}">
+                        <span>{$info.result.name}</span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-6 col-sm-3">手机号码：</label>
+                    <div class="formControls col-xs-6 col-sm-9 skin-minimal">
+                        <input type="text" class="input-text" value="{$info.result.mobile}" id="mobile" name="mobile"
+                                placeholder="{$info.result.mobile}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">企业邮箱：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="{$info.result.email}" id="email" name="email"
+                               placeholder="{$info.result.email}"></div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">联系电话：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="{$info.result.teliphone}" id="teliphone"
+                               name="teliphone"
+                                placeholder="{$info.result.teliphone}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">人员规模：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="{$info.result.scale}" id="scale" name="scale"
+                                placeholder="{$info.result.scale}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">省市区县</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <select name="provinceId" id="provinceId">
+                            <option value="0">省</option>
+                            {foreach name="province" item="vo" key="k" }
+                            <option value="{$k}" {eq name="k" value="$info.result.provinceId"}selected{/eq} >{$vo}</option>
+                            {/foreach}
+                        </select>
+                        <select name="cityId" id="cityId">
+                            <option value="0">市</option>
+                            {foreach name="city" item="vo" key="k" }
+                            <option value="{$k}" {eq name="k" value="$info.result.cityId"}selected{/eq} >{$vo}</option>
+                            {/foreach}
+                        </select>
+                        <select name="districtId" id="districtId">
+                            <option value="0">区</option>
+                            {foreach name="district" item="vo" key="k" }
+                            <option value="{$k}" {eq name="k" value="$info.result.districtId"}selected{/eq} >{$vo}</option>
+                            {/foreach}
+                        </select>
+
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">地址：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="{$info.result.address}" id="address" name="address"
+                                placeholder="{$info.result.address}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">公司简介：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <!--<input type="text" class="input-text" value="{$info.result.summary}" id="summary" name="summary"
+                                placeholder="{$info.result.summary}">-->
+                        <textarea class="textarea radius" id="summary" name="summary">{$info.result.summary}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="row cl">
+                    <div class="col-xs-12 panel">
+                        <div class="row cl">
+                            <label class="form-label col-xs-3 col-sm-3">公司logo：</label>
+                            <div class="formControls col-xs-9 col-sm-9">
+                                <img src="{:C('img_http_url')}{$info.result.logo}" id="iminfo" class="img-responsive thumbnail" alt="公司logo"><br/>
+                                <span id="imglogo"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 panel">
+                        <div class="row cl">
+                            <label class="form-label col-xs-3 col-sm-3">营业执照：</label>
+                            <div class="formControls col-xs-9 col-sm-9">
+                                <img src="{:C('img_http_url')}{$info.result.busiessLicense}" class="img-responsive thumbnail" alt="营业执照" id="yingye">
+                                <br/>
+                                <span id="imgyingye"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript">
+    var loadind='';
+    $(function(){
+        jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            return this.optional(element) || (length == 11 && /^(((13[0-9]{1})||(15[0-9]{1})||(14[0-9]{1})||(17[0-9]{1})||(18[0-9]{1}))+\d{8})$/.test(value));
+        }, "请填写有效的手机号码");
+
+        jQuery.validator.addMethod( "isTel",function(value,element){
+            var pattern =/^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/;
+            if(value!=''){if(!pattern.exec(value)){return false;}};
+            return true;
+        } ,  "请输入有效的联系电话" );
+
+        $("#edit-form").validate({
+            rules: {
+                mobile:{required: true, isMobile:true},
+                teliphone:{isTel:true},
+                email:{email:true}
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            onfocusout:function(element){
+                $(element).valid();
+            }
+        });
+
+
+
+        var uploader = WebUploader.create({
+            pick: {id: '#imglogo', multiple: false,innerHTML: '公司logo'},
+            auto: true,
+            title: 'Images',
+            swf: '/static/uiadmin/lib/webuploader/0.1.5/Uploader.swf',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*',
+            server: "{:U('init/uploadimg')}",
+            fileSingleSizeLimit: 2 * 1024 * 1024,
+            fileSizeLimit: 2 * 1024 * 1024,
+            formData:{id:'{$info.result.id}'},
+            thumb: {
+                width: 110,
+                height: 110,
+                quality: 70,
+                allowMagnify: true,
+                crop: true,
+                type: 'image/jpeg'
+            },
+            compress: {
+                quality: 90,
+                allowMagnify: false,
+                crop: false,
+                preserveHeaders: true,
+                noCompressIfLarger: false,
+                // 单位字节，如果图片大小小于300kb，不会采用压缩。
+                compressSize: 300 * 1024
+            },
+            fileNumLimit: 1,
+        });
+        uploader.on('fileQueued', function (file) {
+            uploader.makeThumb(file, function (error, ret) {
+                if (error) {
+                    layer.msg('浏览器不支持图片预览', {icon: 5});
+                    return;
+                } else {
+                    $('#iminfo').attr('src', ret);
+                }
+            });
+        });
+
+        var imgyingye = WebUploader.create({
+            pick: {id: '#imgyingye', multiple: false,innerHTML: '营业执照'},
+            auto: true,
+            title: 'Images',
+            swf: '/static/uiadmin/lib/webuploader/0.1.5/Uploader.swf',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*',
+            server: "{:U('init/uploadimg')}",
+            fileSingleSizeLimit: 2 * 1024 * 1024,
+            fileSizeLimit: 2 * 1024 * 1024,
+            formData:{id:'{$info.result.id}'},
+            thumb: {
+                width: 110,
+                height: 110,
+                quality: 70,
+                allowMagnify: true,
+                crop: true,
+                type: 'image/jpeg'
+            },
+            compress: {
+                quality: 90,
+                allowMagnify: false,
+                crop: false,
+                preserveHeaders: true,
+                noCompressIfLarger: false,
+                compressSize: 300 * 1024
+            },
+            fileNumLimit: 1,
+        });
+        imgyingye.on('fileQueued', function (file) {
+            imgyingye.makeThumb(file, function (error, ret) {
+                if (error) {
+                    layer.msg('浏览器不支持图片预览', {icon: 5});
+                    return;
+                } else {
+                    $('#yingye').attr('src', ret);
+                }
+            });
+        });
+        imgyingye.on('uploadStart', function () {
+            loadind = layer.load(1, {shade: [0.8, '#393D49']});
+        });
+        imgyingye.on('uploadError', function (file, reason) {
+            layer.close(loadind);
+            layer.msg('图片上传错误[' + reason + ']', {icon: 5});
+        });
+        imgyingye.on('error', function (type) {
+            if (type == 'Q_EXCEED_SIZE_LIMIT') {
+                layer.msg('上传的图片不能超过2MB', {icon: 5});
+            } else if (type == 'Q_EXCEED_NUM_LIMIT') {
+                layer.msg('上传的图片只能上传一张', {icon: 5});
+            } else if (type == 'Q_TYPE_DENIED') {
+                layer.msg('上传的文件类型不对', {icon: 5});
+            }
+            return false;
+        });
+        imgyingye.on('uploadSuccess', function (file, data) {
+            layer.close(loadind);
+            if (data.code != '0') {
+                layer.msg(data.msg, {icon: 5});
+                return false;
+            } else {
+                layer.msg('图片上传成功！', {icon: 1});
+                $('#qiyefile').val(data.msg);
+            }
+        });
+        uploader.on('uploadStart', function () {
+            loadind = layer.load(1, {shade: [0.8, '#393D49']});
+        });
+        uploader.on('uploadError', function (file, reason) {
+            layer.close(loadind);
+            layer.msg('图片上传错误[' + reason + ']', {icon: 5});
+        });
+        uploader.on('error', function (type) {
+            if (type == 'Q_EXCEED_SIZE_LIMIT') {
+                layer.msg('上传的图片不能超过2MB', {icon: 5});
+            } else if (type == 'Q_EXCEED_NUM_LIMIT') {
+                layer.msg('上传的图片只能上传一张', {icon: 5});
+            } else if (type == 'Q_TYPE_DENIED') {
+                layer.msg('上传的文件类型不对', {icon: 5});
+            }
+            return false;
+        });
+        uploader.on('uploadSuccess', function (file, data) {
+            layer.close(loadind);
+            if (data.code != '0') {
+                layer.msg(data.msg, {icon: 5});
+                return false;
+            } else {
+                layer.msg('图片上传成功！', {icon: 1});
+                $('#logofile').val(data.msg);
+            }
+        });
+        $('#provinceId').change(function () {
+            $.post("{:U('base/getcity')}",{pid:$(this).children('option:selected').val()},function (ref) {
+                if(ref.code){
+                    alert(ref.msg);
+                    return false;
+                }
+                var html=new Array();
+                html.push('<option value="0">--市--</option>');
+                $.each(ref.data, function (n, value) {
+                    html.push('<option value="'+n+'">'+value+'</option>');
+                });
+                $('#cityId').html(html.join(''));
+            },'json');
+        });
+        $('#cityId').change(function () {
+            $.post("{:U('base/getdistrict')}",{pid:$(this).children('option:selected').val()},function (ref) {
+                if(ref.code){
+                    alert(ref.msg);
+                    return false;
+                }
+                var html=new Array();
+                html.push('<option value="0">--县/区--</option>');
+                $.each(ref.data, function (n, value) {
+                    html.push('<option value="'+n+'">'+value+'</option>');
+                });
+                $('#districtId').html(html.join(''));
+            },'json');
+        });
+    });
+</script>
+</body>
+</html>

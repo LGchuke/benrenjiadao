@@ -1,0 +1,66 @@
+{include file="common/header" /}
+<title>消息管理-用户反馈</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 消息管理 <span class="c-gray en">&gt;</span> 用户反馈 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form action="{:U('message/feedback')}" method="get">
+        <div class="text-c">
+            开始时间：<input id="start_date" name="start_date" value="{$start_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" />
+            &nbsp;&nbsp;至&nbsp;&nbsp;结束时间：<input id="end_date" name="end_date" value="{$end_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" />
+            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+        </div>
+    </form>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="15%">公司名称</th>
+                <th width="10%">用户姓名</th>
+                <th width="15%">反馈时间</th>
+                <th width="70%">反馈内容</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$vo.entname}</td>
+                <td>{$vo.name}</td>
+                <td>{$vo.created_at}</td>
+                <td>{$vo.content}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+    });
+    function add(){
+        var url = "{:U('leave/goadd')}";
+        layer_show("新增请假类型",url,800,500);
+    }
+    function del(id){
+        layer.confirm('确认要删除该请假类型吗？',function(index){
+            $.post("{:U('leave/del')}",{id:id},function (ref) {
+                if(ref.code==0){
+                    $('.btn-refresh').click();
+                    window.location.reload();
+                    layer.msg('已删除!',{icon: 1,time:1000});
+                }else{
+                    layer.msg(ref.msg,{icon: 1,time:1000});
+                    return ;
+                }
+
+            },'json');
+        });
+    }
+</script>
+</body>
+</html>

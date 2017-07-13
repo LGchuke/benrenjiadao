@@ -1,0 +1,64 @@
+{include file="common/header" /}
+<title>考勤统计</title>
+</head>
+<body>
+<div class="page-container">
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <tbody>
+            <tr class="text-c">
+                <td>上班时间</td>
+                <td>{:date('H:i:s',strtotime($worktimeStart))}</td>
+                <td>下班时间</td>
+                <td>{:date('H:i:s',strtotime($worktimeOff))}</td>
+            </tr>
+            <tr class="text-c">
+                <td>最早签到时间</td>
+                <td>{:date('H:i:s',strtotime($signinStartTime))}</td>
+                <td>最迟签退时间</td>
+                <td>{:date('H:i:s',strtotime($signoutEndTime))}</td>
+            </tr>
+            <tr class="text-c">
+                <td>部门</td>
+                <td colspan="3">{$departmentName}</td>
+            </tr>
+            <tr class="text-c">
+                <td>启用迟到早退算旷工</td>
+                <td colspan="3">迟到/早退未超过<span style="color: #A60000">{$flexibleThreshold}</span>分钟算正常考勤
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td>签到弥补</td>
+                <td colspan="3">
+                    迟到<span style="color: #A60000">{$lateThreshold}</span>分钟用晚退相应时长来弥补
+                    <br/>早退<span style="color: #A60000">{$leaveThreshold}</span>分钟用早到相应时长来弥补</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script>
+</body>
+</html>

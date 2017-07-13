@@ -1,0 +1,200 @@
+{include file="common/header" /}
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/static/uiadmin/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+
+
+    <link rel="stylesheet" type="text/css" href="/static/uiadmin/static/h-ui/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/uiadmin/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" href="/static/uiadmin/lib/laypage/1.2/skin/laypage.css" type="text/css">
+<!--   <script type="text/javascript" src="../../../js/jquery.ztree.exedit.js"></script>-->
+    <style>
+        .ztree * {
+            font-size: 15px;
+            margin: 3px;;
+        }
+    </style>
+
+</HEAD>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 人事管理 <span class="c-gray en">&gt;</span> 部门管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="content_wrap" style="margin: 20px;min-width: 1020px;width: 1020px;">
+    <div class="zTreeDemoBackground left" style="width: 250px;display: block;float: left;">
+        <div style="margin-left: 10px;">
+            <p><h5>{$entname}</h5></p>
+            <p>组织架构管理—组织架构</p>
+            <p>
+                <!--<a onclick="add();"><span class="btn btn-success radius">新增</span></a>&nbsp;&nbsp;
+                <a onclick="edit();"><span class="btn btn-primary radius">修改</span></a>&nbsp;&nbsp;
+                <a onclick="delp();"><span class="btn btn-danger radius">删除</span></a>-->
+                <a onclick="goadddep();"><span class="btn btn-success radius">新增</span></a>&nbsp;&nbsp;
+                <a onclick="goeditdep();"><span class="btn btn-primary radius">修改</span></a>&nbsp;&nbsp;
+                <a onclick="delp();"><span class="btn btn-danger radius">删除</span></a>
+            </p>
+        </div>
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+    <form action="{:U('department/index')}" method="get" id="subform">
+        <input type="hidden" name="depid" id="depid">
+        <input type="hidden" name="depname" id="depname">
+    </form>
+    <div class="right" style="width: 730px;display: block;float: right;" id="depDetailDiv">
+        <h4><span id="_curdepName"></span></h4>
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                <thead>
+                <tr class="text-c">
+                    <th width="80">工号</th>
+                    <th width="100">员工姓名</th>
+                    <th width="40">性别</th>
+                    <th width="90">部门</th>
+                    <th width="50">职位</th>
+                    <th width="50">在职状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="list" id="vo" key="k"}
+                <tr class="text-c">
+                    <td>{$vo.job_number}</td>
+                    <td>
+                        {switch name="vo.hr_flag"}
+                        {case value="0"}{$vo.name}<span class="label label-danger radius">HR</span>{/case}
+                        {case value="1"}{$vo.name}{/case}
+                        {/switch}
+                    </td>
+                    <td>
+                        {switch name="vo.sex"}
+                        {case value="0"}男{/case}
+                        {case value="1"}女{/case}
+                        {/switch}
+                    </td>
+                    <td>{$vo.depname}</td>
+                    <td>{$vo.position}</td>
+                    <td>{switch name="vo.status"}
+                        {case value="0"}<span class="label label-success radius">在职</span>{/case}
+                        {case value="1"}<span class="label label-error radius">离职</span>{/case}
+                        {/switch}
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+            <div id="pageNav" class="pageNav" total="{$total}"></div>
+        </div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/zTree/v3/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/zTree/v3/js/jquery.ztree.excheck-3.5.min.js"></script>
+<SCRIPT type="text/javascript">
+    var setting = {
+        check: {enable: true,chkboxType:{ "Y":"", "N":""}},
+        data: {simpleData: {enable: true}},
+        view: {showIcon: false},
+        callback: {onClick: onClick,onCheck: onCheck}
+    };
+
+    function onCheck(event, treeId, treeNode) {
+        treeObj.checkAllNodes(false);
+        if(curDepId_op != treeNode.id){
+            curDepId_op = treeNode.id;
+            curDepname_op = treeNode.name;
+            treeObj.checkNode(treeNode, true, true);
+        }else{
+            curDepId_op = '';
+            curDepname_op = '';
+        }
+    }
+
+    function onClick(event, treeId, treeNode, clickFlag) {
+        curDepId = treeNode.id;
+        curDepName = treeNode.name;
+        refreshEmps(curDepId);
+    }
+
+    function refreshEmps(){
+        if(curDepId == ''){
+            layer.msg("请先选择需要删除的部门",{icon:2,time:1000});
+            return ;
+        }else{
+            $("#depid").val(curDepId);
+            $("#depname").val(curDepName);
+            $("#subform").submit();
+        }
+    }
+
+    function delp(){
+        if(curDepname_op == '未分配部门'){
+            layer.msg("默认部门不能被删除",{icon:2,time:1000});
+            return;
+        }
+        if(curDepId_op == ''){
+            layer.msg("请先选择需要删除的部门",{icon:2,time:1000});
+            return ;
+        }
+        layer.confirm('确定要删除该部门吗？',function(index){
+            $.ajax({
+                url:"{:U('department/del')}",
+                data:{id:curDepId_op},
+                success:function(info){
+                    info = eval('('+info+')');
+                    if(info.code==1){
+                        layer.msg(info.msg,{icon:2,time:2000});
+                        return;
+                    }else{
+                        layer.msg('已删除',{icon:1,time:1000});
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+
+    }
+    var treeObj;
+    $(document).ready(function(){
+        var nodeData = eval("(" + '{$deps}' + ")");
+         treeObj = $.fn.zTree.init($("#treeDemo"), setting, nodeData);
+        //setCheck();
+        treeObj.expandAll(true);
+    });
+</SCRIPT>
+<script type="application/javascript">
+
+    var curDepId = '';
+    var curDepName = '';
+    var curDepId_op = '';
+    var curDepname_op = '';
+    var ownerData = [];
+
+    function goadddep(){
+        var url = "{:U('department/goadddep')}";
+        layer_show('新增部门',url,800,500);
+    }
+
+    function goeditdep(){
+        if(curDepname_op == '未分配部门'){
+            layer.msg("默认部门不能被修改",{icon:2,time:1000});
+            return;
+        }
+        $("#operType").val("edit");
+        if(curDepId_op == ''){
+            layer.msg("请先选择需要修改的部门",{icon:2,time:1000});
+            return ;
+        }else{
+            var url = "{:U('department/goeditdep')}"+'?id='+curDepId_op;
+            layer_show('编辑部门',url,800,500);
+        }
+    }
+
+    $(document).ready(function(){
+        var depname = '{$depname}';
+        if(depname == ''){
+            $("#_curdepName").empty().append('当前部门:'+'{$entname}'+'[公司]');
+        }else{
+            $("#_curdepName").empty().append('当前部门:'+depname);
+        }
+    });
+
+</script>
+</body>
+</html>

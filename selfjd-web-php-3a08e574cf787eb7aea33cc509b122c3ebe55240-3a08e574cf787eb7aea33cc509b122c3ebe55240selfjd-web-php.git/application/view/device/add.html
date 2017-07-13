@@ -1,0 +1,89 @@
+{include file="common/header" /}
+<title>设备绑定 - 管理员管理 - H-ui.admin v2.3</title>
+</head>
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" method="post" action="{:U('device/dobind')}" id="form-admin-add">
+        <input type="hidden" name="cid" value="{$cid}">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">企业名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                {$name}
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>设备型号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" autocomplete="off" value="" placeholder="设备名称" id="name"
+                       name="name" maxlength="20">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>设备序列号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" autocomplete="off" placeholder="设备序列号" id="serial_number"
+                       name="serial_number" maxlength="32">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" id="save" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+{include file="common/footer" /}
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    $(function () {
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+            $('#form-admin-add').validate({
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    serial_number: {
+                        required: true,
+                        rangelength:[32,32]
+                    }
+                },messages:{
+                    name:{required:"设备名称不能为空"},
+                    serial_number:{required:"请输入32位长度的设备序列号", rangelength: "请输入32位长度的设备序列号" }
+                },
+                onkeyup: false,
+                focusCleanup: true,
+                onsubmit: true,
+                success: "valid",
+                submitHandler: function (form) {
+                    $.post(form.action, $(form).serialize(), function (ref) {
+                        if (ref.code) {
+                            layer.msg(ref.msg);
+                            return false;
+                        } else {
+                            layer.msg(ref.msg);
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.$('.btn-refresh').click();
+                            window.parent.location.reload();
+                            parent.layer.close(index);
+                        }
+                    }, 'json');
+                },
+                invalidHandler: function (form, validator) {  //不通过回调
+                    return false;
+                }
+            });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

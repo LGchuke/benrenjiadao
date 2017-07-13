@@ -1,0 +1,88 @@
+{include file="common/header" /}
+<title>设备信息</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 考勤管理 <span class="c-gray en">&gt;</span> 企业考勤 <a class="btn-refresh btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="mt-20">
+        <div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a class="btn btn-primary radius" href="{:U('attendance/template')}"><i class="Hui-iconfont">&#xe600;</i> 新增考勤</a> </span></div>
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th>使用部门</th>
+                <th>上班时间</th>
+                <th>下班时间</th>
+                <th width="120">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td><a title="点击查看规则" onclick="edit('{$vo.departmentName}-考勤规则','{:U('attendance/regulation')}','{$vo.id}')" href="javascript:;">{$vo.departmentName}</a></td>
+                <td>{:date('H:i:s',strtotime($vo.worktimeStart))}</td>
+                <td>{:date('H:i:s',strtotime($vo.worktimeOff))}</td>
+                <td class="f-14">
+                    <a title="修改" title="修改" onclick="editAttendance('{$vo.id}');" class="label label-primary radius" href="javascript:;" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-edit"> 修改</i>
+                    </a>
+                    <a title="删除" href="javascript:;" class="label label-danger radius" onclick="del(this,'{$vo.id}')" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-del3">删除</i>
+                    </a></td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+    function editAttendance(id){
+        var url = "{:U('attendance/goTmplateById')}" + "?id="+id;
+        layer_show("考勤模板", url, 900, 550);
+''    }
+    function edit(title,url,id,w,h){
+        /*url = url+'?id='+id;
+        layer_show(title,url,w,500);*/
+        var url = "{:U('attendance/goTmplateById')}" + "?id="+id +"&tp=view";
+        layer_show("考勤模板", url, 900, 550);
+    }
+    function add(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+    function del(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.post("{:U('attendance/del')}",{id:id},function (ref) {
+                if(ref.code){
+                    layer.msg(ref.msg,{icon: 2,time:1000});
+                    return false;
+                }
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!',{icon: 1,time:1000});
+            },'json');
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{include file="common/header" /}
+<title>考勤统计</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 考勤管理 <span
+        class="c-gray en">&gt;</span> 考勤统计 <a class="btn-refresh btn btn-success radius r"
+                                              style="line-height:1.6em;margin-top:3px"
+                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="text-c">
+        <form method="get" action="{:U('attendance/census')}">
+        时间：
+        <input type="text" {literal}
+               onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'maxdate\')||\'%y-%M-%d\'}'})"
+               {/literal} value="{$search.mindate}" id="mindate" name="mindate" class="input-text Wdate" style="width:120px;">
+        -
+        <input type="text" {literal}
+               onfocus="WdatePicker({minDate:'#F{$dp.$D(\'mindate\')}',maxDate:'%y-%M-%d'})"
+               {/literal} value="{$search.maxdate}" id="maxdate" name="maxdate" class="input-text Wdate" style="width:120px;">
+        姓名: <input type="text" name="name" id="name" placeholder="姓名" style="width:120px" class="input-text">
+            部门: <span class="select-box inline"><select class="select" id="depSel" name="depSel">
+            <option>-请选择-</option>
+        </select></span>
+            <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>查询</button>
+        <a class="btn btn-success" href="{:U('attendance/census',$one)}">查看本月</a>
+        <a class="btn btn-success" href="{:U('attendance/census',$next)}">查看上个月</a>
+        <a class="btn btn-success" href="{:U('attendance/export',$search)}">导出</a>
+        </form>
+    </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th>姓名</th>
+                <th>工号</th>
+                <th>部门</th>
+                <th>手机号</th>
+                <th>出勤天数(天)</th>
+                <th>迟到(次)</th>
+                <th>早退(次)</th>
+                <th>旷工(次)</th>
+                <th>加班时长(小时)</th>
+                <th>请假(小时)</th>
+                <th>调休(小时)</th>
+                <th>出差(天)</th>
+                <th width="90">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$vo.employeName}</td>
+                <td>{$vo.jobNumber}</td>
+                <td>{$vo.departmentName}</td>
+                <td>{$vo.employeMobile}</td>
+                <td>{$vo.signNum}</td>
+                <td>{$vo.lateNum}</td>
+                <td>{$vo.leaveEarlyNum}</td>
+                <td>{$vo.absenceNum}</td>
+                <!--<td>{$vo.overtimSum}</td>-->
+                <td>{$vo.overReal}</td>
+                <td>{$vo.leaveSum}</td>
+                <td>{$vo.daysoffSum}</td>
+                <td>{$vo.travelDays}</td>
+                <td><a title="{$vo.employeName}考勤详情" href="javascript:;" onclick="showinfo(this)" class="label label-primary radius ml-5"
+                       style="text-decoration:none" data-url="{:U('attendance/subsidiary',array_merge($infourl,['employeid'=>$vo.employeId]))}" data-title="说明：{$vo.employeName}({:implode('~',$infourl)})考勤详情"><i class="Hui-iconfont Hui-iconfont-menu"></i></a></td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url:"{:U('department/getAlldepartments')}",
+            success:function(info){
+                var items = eval("("+info+")");
+                var html = '<option value="">-请选择-</option>';
+                for(var i =0; i< items.length; i++){
+                    html += '<option value="'+items[i]["id"]+'">'+items[i]["name"]+'</option>';
+                }
+                $("#depSel").empty().append(html);
+            }
+        });
+
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+    function showinfo(obj) {
+        layer_show($(obj).attr('data-title'), $(obj).attr('data-url'));
+    }
+</script>
+</body>
+</html>

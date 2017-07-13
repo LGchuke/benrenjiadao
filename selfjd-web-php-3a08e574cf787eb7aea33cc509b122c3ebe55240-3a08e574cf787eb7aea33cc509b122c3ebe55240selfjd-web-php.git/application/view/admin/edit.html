@@ -1,0 +1,112 @@
+{include file="common/header" /}
+<title>新增平台人员 - 平台人员管理 - 系统设置</title>
+</head>
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" action="{:U('admin/save')}" id="form-article-add">
+        <input type="hidden" name="id" value="{$info.id}">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>姓名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$info.name}" autocomplete="off" placeholder="" id="name" name="name" maxlength="20">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>登录名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$info.login_name}" autocomplete="off" placeholder="" id="login_name" name="login_name" maxlength="20">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用户类型：</label>
+            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="user_type" id="user_type" class="select">
+                    <option value="1" {$info.user_type == '1' ? 'selected="selected"':''}>平台运营人员</option>
+                    <option value="3" {$info.user_type == '3' ? 'selected="selected"':''}>仓库管理员</option>
+                </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>密码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="password" class="input-text" autocomplete="off" value="" placeholder="" id="password" name="password" maxlength="20">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>手机号码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="" id="mobile" name="mobile" value="{$info.mobile}" maxlength="20">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <input class="btn btn-secondary radius" type="submit" value="保存">
+            </div>
+        </div>
+    </form>
+</article>
+{include file="common/footer" /}
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/static/uiadmin/lib/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    $(function() {
+        $('#form-article-add').validate({
+            rules: {
+                name: {
+                    required: true,
+                    maxlength:20
+                },
+                login_name: {
+                    required: true,
+                    maxlength:20
+                },
+                /*password:{
+                    required: true,
+                    maxlength:20,
+                    minlength:6
+                },*/
+                mobile:{
+                    required:true,
+                    isTel:true,
+                    maxlength:20,
+                    minlength:6
+                }
+            },messages:{
+                name:{required:"姓名不能为空"},
+                login_name:{required:"登录名不能为空"},
+//                password:{required:"密码不能为空"},
+                mobile:{required:"电话不能为空"}
+            },
+            onkeyup: false,
+            focusCleanup: true,
+            onsubmit: true,
+            success: "valid",
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ref) {
+                    if (ref.code) {
+                        layer.msg(ref.msg);
+                        return false;
+                    } else {
+                        layer.msg(ref.msg);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.$('.btn-refresh').click();
+                        window.parent.location.reload();
+                        parent.layer.close(index);
+                    }
+                }, 'json');
+            },
+            invalidHandler: function (form, validator) {  //不通过回调
+                return false;
+            }
+        });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

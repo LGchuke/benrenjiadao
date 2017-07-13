@@ -1,0 +1,317 @@
+{include file="common/header" /}
+<title>考勤模板</title>
+</head>
+<body>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="tmpl1" style="width: 90%; text-align: center;margin: auto;display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+                <tr class="text-c">
+                    <td width="25%">上班时间:</td>
+                    <td width="25%"><input id="worktime_start_1" class="input-text Wdate" value="{$tmp1.worktime_start}"
+                               style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                    <td width="25%">下班时间:</td>
+                    <td width="25%"><input id="worktime_off_1" class="input-text Wdate" value="{$tmp1.worktime_off}"
+                               style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                </tr>
+                <tr class="text-c">
+                    <td width="25%">最早签到时间:</td>
+                    <td width="25%"><input id="signin_start_time_1" class="input-text Wdate" value="{$tmp1.signin_start_time}"
+                                           style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                    <td width="25%">最晚签退时间:</td>
+                    <td width="25%"><input id="signout_end_time_1" class="input-text Wdate" value="{$tmp1.signout_end_time}"
+                                           style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                </tr>
+                <tr class="text-c">
+                    <td width="25%">部门:</td>
+                    <td width="75%" colspan="3" style="text-align: left;">
+                        <!--input class="btn btn-primary radius" type="button" value="选择部门" readonly="readonly" onclick="selectDep();">-->
+                        <span name="dep_selected" style="margin-left: 20px;">{$depname}</span>
+                    </td>
+                </tr>
+                <tr class="text-c">
+                    <td width="25%">启用迟到早退算旷工:</td>
+                    <td width="75%" colspan="3" style="text-align: left;">
+                        <p>规则1：迟到/早退<input id="absence_threshold1_1" class="input-text " style="width:50px" value="{$tmp1.absence_threshold1}"/>小时算旷工0.5天</p>
+                        <p>规则2：迟到/早退<input id="absence_threshold2_1" class="input-text " style="width:50px"  value="{$tmp1.absence_threshold2}" />小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade in active" id="tmpl2" style="width: 90%; text-align: center;margin: auto;display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+            <tr class="text-c">
+                <td width="25%">上班时间:</td>
+                <td width="25%"><input id="worktime_start_2" class="input-text Wdate"  value="{$tmp2.worktime_start}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                <td width="25%">下班时间:</td>
+                <td width="25%"><input id="worktime_off_2" class="input-text Wdate" value="{$tmp2.worktime_off}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">最早签到时间:</td>
+                <td width="25%"><input id="signin_start_time_2" class="input-text Wdate" value="{$tmp2.signin_start_time}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                <td width="25%">最晚签退时间:</td>
+                <td width="25%"><input id="signout_end_time_2" class="input-text Wdate" value="{$tmp2.signout_end_time}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">部门:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                   <!-- <input class="btn btn-primary radius" type="button" value="选择部门" readonly="readonly" onclick="selectDep();">-->
+                    <span name="dep_selected" style="margin-left: 20px;">{$depname}</span>
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">启用迟到早退算旷工:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>规则1：迟到/早退<input id="absence_threshold1_2" class="input-text " value="{$tmp2.absence_threshold1}" style="width:50px"  />小时算旷工0.5天</p>
+                    <p>规则2：迟到/早退<input id="absence_threshold2_2" class="input-text " value="{$tmp2.absence_threshold2}" style="width:50px"  />小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                </td>
+            </tr>
+            <tr class="text-c" style="line-height: 30px;">
+                <td width="25%">启用迟到/早退弹性时间:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>迟到/早退<input id="flexible_threshold" class="input-text " value="{$tmp2.flexible_threshold}" style="width:50px"  />分钟内算正常考勤</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade in active" id="tmpl3" style="width: 90%; text-align: center;margin: auto; display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+            <tr class="text-c">
+                <td width="25%">上班时间:</td>
+                <td width="25%"><input id="worktime_start_3" class="input-text Wdate" value="{$tmp3.worktime_start}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                <td width="25%">下班时间:</td>
+                <td width="25%"><input id="worktime_off_3" class="input-text Wdate" value="{$tmp3.worktime_off}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">最早签到时间:</td>
+                <td width="25%"><input id="signin_start_time_3" class="input-text Wdate" value="{$tmp3.signin_start_time}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                <td width="25%">最晚签退时间:</td>
+                <td width="25%"><input id="signout_end_time_3" class="input-text Wdate" value="{$tmp3.signout_end_time}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">部门:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <!--<input class="btn btn-primary radius" type="button" value="选择部门" readonly="readonly" onclick="selectDep();">-->
+                    <span name="dep_selected" style="margin-left: 20px;">{$depname}</span>
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">启用迟到早退算旷工:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>规则1：迟到/早退<input id="absence_threshold1_3" value="{$tmp3.absence_threshold1}" class="input-text " style="width:50px"  />小时算旷工0.5天</p>
+                    <p>规则2：迟到/早退<input id="absence_threshold2_3" value="{$tmp3.absence_threshold2}" class="input-text " style="width:50px"  />小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                </td>
+            </tr>
+            <tr class="text-c" style="line-height: 30px;">
+                <td width="25%">启用签到弥补:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>迟到<input id="late_threshold_3" class="input-text " value="{$tmp3.late_threshold}" style="width:50px"  />分钟，用晚退<input id="late_time_3" value="{$tmp3.late_time}" class="input-text " style="width:50px"  />分钟弥补</p>
+                    <p>早退<input id="leave_threshold_3" class="input-text " value="{$tmp3.leave_threshold}" style="width:50px"  />分钟，用早到<input id="leave_time_3" value="{$tmp3.leave_time}" class="input-text " style="width:50px"  />分钟弥补</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade in active" id="tmpl4" style="width: 90%; text-align: center;margin: auto;display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+            <tr class="text-c">
+                <td width="25%">上班时间:</td>
+                <td width="25%"><input id="worktime_start_4" class="input-text Wdate" value="{$tmp4.worktime_start}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                <td width="25%">下班时间:</td>
+                <td width="25%"><input id="worktime_off_4" class="input-text Wdate" value="{$tmp4.worktime_off}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">最早签到时间:</td>
+                <td width="25%"><input id="signin_start_time_4" class="input-text Wdate" value="{$tmp4.signin_start_time}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+                <td width="25%">最晚签退时间:</td>
+                <td width="25%"><input id="signout_end_time_4" class="input-text Wdate" value="{$tmp4.signout_end_time}"
+                                       style="width:230px" onfocus="WdatePicker({dateFmt:'HH:mm:ss',readOnly:true})" /></td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">部门:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <!--<input class="btn btn-primary radius" type="button" value="选择部门" readonly="readonly" onclick="selectDep();">-->
+                    <span name="dep_selected" style="margin-left: 20px;">{$depname}</span>
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">启用迟到早退算旷工:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>规则1：迟到/早退<input id="absence_threshold1_4" class="input-text " value="{$tmp4.absence_threshold1}" style="width:50px"  />小时算旷工0.5天</p>
+                    <p>规则2：迟到/早退<input id="absence_threshold2_4" class="input-text " value="{$tmp4.absence_threshold2}" style="width:50px"  />小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                </td>
+            </tr>
+            <tr class="text-c" style="line-height: 30px;">
+                <td width="25%">启用签到弥补:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>迟到<input id="late_threshold_4" class="input-text " value="{$tmp4.late_threshold}" style="width:50px"  />分钟，用晚退<input id="late_time_4" value="{$tmp4.late_time}" class="input-text " style="width:50px"  />分钟弥补</p>
+                    <p>早退<input id="leave_threshold_4" class="input-text " value="{$tmp4.leave_threshold}" style="width:50px"  />分钟，用早到<input id="leave_time_4" value="{$tmp4.leave_time}" class="input-text " style="width:50px"  />分钟弥补</p>
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">加班设置:</td>
+                <td width="25%">
+                        <span class="select-box inline">精确度：
+                            <select id="precisions" class="select" style="width: 153px;" >
+                                <option value="0" {$tmp4.precisions==0 ? 'selected="selected"':''}>分钟</option>
+                                <option value="1" {$tmp4.precisions==1 ? 'selected="selected"':''}>小时</option>
+                            </select>
+                        </span>
+                </td>
+                <td width="25%" colspan="2" style="text-align: left;">加班类型:
+                    <input type="radio" name="work_type" value="0" {$tmp4.work_type==0 ? 'checked="checked"':''}>平时&nbsp;&nbsp;
+                    <input type="radio" name="work_type" value="1" {$tmp4.work_type==1 ? 'checked="checked"':''}>周末&nbsp;&nbsp;
+                    <input type="radio" name="work_type" value="2" {$tmp4.work_type==2 ? 'checked="checked"':''}>节假日&nbsp;&nbsp;
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p>
+    <h4 style="margin-left: 100px;"><span class="label label-danger">备注：1. 具体数值可根据公司实际情况修改。2. 每日旷工累计时间不超过1天。</span></h4>
+    </p>
+    <div style="text-align: center;">
+        <p>
+            <input class="btn btn-success " type="button" value="保&nbsp;&nbsp;存" onclick="useTmpl();">
+            <input class="btn btn-warning " type="button" value="取&nbsp;&nbsp;消" onclick="cancel();">
+        </p>
+    </div>
+    <input type="hidden" id="depid_selected">
+    <input type="hidden" id="sign_tmplate_id" value="{$tid}">
+    <input type="hidden" id="ow_tmplate_id" value="{$owid}">
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .table > tbody > tr > td{
+        vertical-align: middle;
+    }
+</style>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/bootstrap-modal/2.2.4/bootstrap-modalmanager.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/bootstrap-modal/2.2.4/bootstrap-modal.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/layer/2.1/layer.js"></script>
+<script type="text/javascript">
+    var cur_tab = 1;
+
+    $(function(){
+        cur_tab = '{$parent}';
+        $("#tmpl"+cur_tab).show();
+        var depName = '{$depname}';
+        var depId = '{$depid}';
+        $("#depid_selected").val(depId);
+        $("span[name='dep_selected']").each(function (){
+            $(this).empty();
+            $(this).append('<span class="label label-success radius">'+depName+'</span>&nbsp;');
+        });
+    });
+
+    function checkNum(value){
+        var pat = /^(0|([1-9]\d*))$/;
+        return !pat.test(value);
+    }
+
+    function cancel(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+    //跳转到选择部门页面
+    function selectDep(){
+        var url = "{:U('department/selectDep')}";
+        layer_show("选择部门",url,400,450);
+    }
+
+    function useTmpl(){
+        var worktime_start = $("#worktime_start_" + cur_tab).val();
+        var worktime_off = $("#worktime_off_" + cur_tab).val();
+        var signin_start_time = $("#signin_start_time_" + cur_tab).val();
+        var signout_end_time = $("#signout_end_time_" + cur_tab).val();
+        var dep_selected = $("#depid_selected").val();
+        var absence_threshold1 = $("#absence_threshold1_" + cur_tab).val();
+        var absence_threshold2 = $("#absence_threshold2_" + cur_tab).val();
+        var flexible_threshold = $("#flexible_threshold").val();
+        var late_threshold = $("#late_threshold_" + cur_tab).val();
+        var late_time = $("#late_time_" + cur_tab).val();
+        var leave_time = $("#leave_time_" + cur_tab).val();
+        var leave_threshold = $("#leave_threshold_" + cur_tab).val();
+        var precisions = $("#precisions").val();
+        //加班类型
+        var work_type = $("input[name='work_type']:checked").val();
+
+
+        var data = {"parent":cur_tab, "worktime_start":worktime_start, "worktime_off":worktime_off, "signin_start_time":signin_start_time,
+        "signout_end_time":signout_end_time, "department_id":dep_selected, "absence_threshold1":absence_threshold1,
+        "absence_threshold2":absence_threshold2, "flexible_threshold":flexible_threshold, "late_threshold":late_threshold,
+        "late_time":late_time, "leave_time":leave_time, "leave_threshold":leave_threshold, "precisions":precisions, "work_type":work_type};
+
+        var sign_tmplate_id = $("#sign_tmplate_id").val();
+        var ow_tmplate_id = $("#ow_tmplate_id").val();
+        if(sign_tmplate_id != null || sign_tmplate_id != undefined){
+            data["sign_tmplate_id"] = sign_tmplate_id;
+        }
+        if(ow_tmplate_id != null || ow_tmplate_id != undefined){
+            data["ow_tmplate_id"] = ow_tmplate_id;
+        }
+
+        if(checkNum(absence_threshold1)){layer.msg("[迟到/早退] 输入框处请输入大于等于0的整数值",{icon:2,time:2000});return;}
+        if(checkNum(absence_threshold2)){layer.msg("[迟到/早退] 输入框处请输入大于等于0的整数值",{icon:2,time:2000});return;}
+        if(cur_tab == 2){
+            if(checkNum(flexible_threshold)){layer.msg("[迟到/早退弹性] 输入框处请输入大于等于0的整数值",{icon:2,time:2000});return;}
+        }
+        if(cur_tab == 3 || cur_tab == 4){
+            if(checkNum(late_threshold)){layer.msg("[签到弥补] 输入框处请输入大于等于0的整数值",{icon:2,time:2000});return;}
+            if(checkNum(late_time)){layer.msg("[签到弥补] 输入框处请输入大于等于0的整数值",{icon:2,time:2000});return;}
+            if(checkNum(leave_time)){layer.msg("[签到弥补] 输入框处请输入大于等于0的整数值",{icon:2,time:2000});return;}
+            if(checkNum(leave_threshold)){layer.msg("[签到弥补] 输入框处请输入大于等于0的整数值",{icon:2,time:2000});return;}
+        }
+
+        layer.confirm('确定要修改该部门的模板吗？',function(index){
+            $.post("{:U('Attendance/addtempl')}",data,function (ref) {
+                if(ref.code){
+                    layer.msg(ref.msg,{icon: 2,time:1000});
+                    return false;
+                }
+                layer.msg('修改成功!',{icon: 1,time:1000});
+                var index = parent.layer.getFrameIndex(window.name);
+                window.parent.location.reload();
+                parent.layer.close(index);
+            },'json');
+        });
+    }
+
+    function edit(title,url,id,w,h){
+        url = url+'?id='+id;
+        layer_show(title,url,w,h);
+    }
+    function add(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+</script>
+</body>
+</html>

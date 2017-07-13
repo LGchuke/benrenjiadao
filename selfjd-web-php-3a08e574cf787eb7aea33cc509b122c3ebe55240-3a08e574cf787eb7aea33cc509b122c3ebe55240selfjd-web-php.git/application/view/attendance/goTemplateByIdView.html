@@ -1,0 +1,222 @@
+{include file="common/header" /}
+<title>考勤模板</title>
+</head>
+<body>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="tmpl1" style="width: 90%; text-align: center;margin: auto;display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+                <tr class="text-c">
+                    <td width="25%">上班时间:</td>
+                    <td width="25%">{$tmp1.worktime_start}</td>
+                    <td width="25%">下班时间:</td>
+                    <td width="25%">{$tmp1.worktime_off}</td>
+                </tr>
+                <tr class="text-c">
+                    <td width="25%">最早签到时间:</td>
+                    <td width="25%">{$tmp1.signin_start_time}</td>
+                    <td width="25%">最晚签退时间:</td>
+                    <td width="25%">{$tmp1.signout_end_time}</td>
+                </tr>
+                <tr class="text-c">
+                    <td width="25%">部门:</td>
+                    <td width="75%" colspan="3" style="text-align: left;">
+                        {$depname}
+                    </td>
+                </tr>
+                <tr class="text-c">
+                    <td width="25%">启用迟到早退算旷工:</td>
+                    <td width="75%" colspan="3" style="text-align: left;">
+                        <p>规则1：迟到/早退{$tmp1.absence_threshold1}小时算旷工0.5天</p>
+                        <p>规则2：迟到/早退{$tmp1.absence_threshold2}小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade in active" id="tmpl2" style="width: 90%; text-align: center;margin: auto;display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+            <tr class="text-c">
+                <td width="25%">上班时间:</td>
+                <td width="25%">{$tmp2.worktime_start}</td>
+                <td width="25%">下班时间:</td>
+                <td width="25%">{$tmp2.worktime_off}</td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">最早签到时间:</td>
+                <td width="25%">{$tmp2.signin_start_time}</td>
+                <td width="25%">最晚签退时间:</td>
+                <td width="25%">{$tmp2.signout_end_time}</td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">部门:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    {$depname}
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">启用迟到早退算旷工:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>规则1：迟到/早退{$tmp2.absence_threshold1}小时算旷工0.5天</p>
+                    <p>规则2：迟到/早退{$tmp2.absence_threshold2}小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                </td>
+            </tr>
+            <tr class="text-c" style="line-height: 30px;">
+                <td width="25%">启用迟到/早退弹性时间:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>迟到/早退{$tmp2.flexible_threshold}分钟内算正常考勤</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade in active" id="tmpl3" style="width: 90%; text-align: center;margin: auto; display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+            <tr class="text-c">
+                <td width="25%">上班时间:</td>
+                <td width="25%">{$tmp3.worktime_start}</td>
+                <td width="25%">下班时间:</td>
+                <td width="25%">{$tmp3.worktime_off}</td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">最早签到时间:</td>
+                <td width="25%">{$tmp3.signin_start_time}</td>
+                <td width="25%">最晚签退时间:</td>
+                <td width="25%">{$tmp3.signout_end_time}</td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">部门:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    {$depname}
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">启用迟到早退算旷工:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>规则1：迟到/早退{$tmp3.absence_threshold1}小时算旷工0.5天</p>
+                    <p>规则2：迟到/早退{$tmp3.absence_threshold2}小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                </td>
+            </tr>
+            <tr class="text-c" style="line-height: 30px;">
+                <td width="25%">启用签到弥补:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>迟到{$tmp3.late_threshold}分钟，用晚退{$tmp3.late_time}分钟弥补</p>
+                    <p>早退{$tmp3.leave_threshold}分钟，用早到{$tmp3.leave_time}分钟弥补</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade in active" id="tmpl4" style="width: 90%; text-align: center;margin: auto;display: none;">
+        <br>
+        <table class="table table-border table-bordered table-bg table-sort">
+            <tbody>
+            <tr class="text-c">
+                <td width="25%">上班时间:</td>
+                <td width="25%">{$tmp4.worktime_start}</td>
+                <td width="25%">下班时间:</td>
+                <td width="25%">{$tmp4.worktime_off}</td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">最早签到时间:</td>
+                <td width="25%">{$tmp4.signin_start_time}</td>
+                <td width="25%">最晚签退时间:</td>
+                <td width="25%">{$tmp4.signout_end_time}</td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">部门:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    {$depname}
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">启用迟到早退算旷工:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>规则1：迟到/早退{$tmp4.absence_threshold1}小时算旷工0.5天</p>
+                    <p>规则2：迟到/早退{$tmp4.absence_threshold2}小时算旷工1天 <font color="red">(若规则2未设置或者设置的时间小于等于规则1设置的时间，则默认规则2无效)</font></p>
+                </td>
+            </tr>
+            <tr class="text-c" style="line-height: 30px;">
+                <td width="25%">启用签到弥补:</td>
+                <td width="75%" colspan="3" style="text-align: left;">
+                    <p>迟到{$tmp4.late_threshold}分钟，用晚退{$tmp4.late_time}分钟弥补</p>
+                    <p>早退{$tmp4.leave_threshold}分钟，用早到{$tmp4.leave_time}分钟弥补</p>
+                </td>
+            </tr>
+            <tr class="text-c">
+                <td width="25%">加班设置:</td>
+                <td width="25%">
+                        <span class="select-box inline">精确度：
+                            {switch name="tmp4.precisions"}
+                                {case value="0"}分钟{/case}
+                                {case value="1"}小时{/case}
+                                {default}分钟
+                            {/switch}
+                        </span>
+                </td>
+                <td width="25%" colspan="2" style="text-align: left;">加班类型:
+                    {switch name="tmp4.work_type"}
+                    {case value="0"}平时{/case}
+                    {case value="1"}周末{/case}
+                    {case value="2"}节假日{/case}
+                    {default}平时
+                    {/switch}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p>
+    <h4 style="margin-left: 100px;"><span class="label label-danger">备注：1. 具体数值可根据公司实际情况修改。2. 每日旷工累计时间不超过1天。</span></h4>
+    </p>
+    <div style="text-align: center;">
+        <p>
+            <input class="btn btn-warning " type="button" value="取&nbsp;&nbsp;消" onclick="cancel();">
+        </p>
+    </div>
+    <input type="hidden" id="depid_selected">
+    <input type="hidden" id="sign_tmplate_id" value="{$tid}">
+    <input type="hidden" id="ow_tmplate_id" value="{$owid}">
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .table > tbody > tr > td{
+        vertical-align: middle;
+    }
+</style>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/bootstrap-modal/2.2.4/bootstrap-modalmanager.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/bootstrap-modal/2.2.4/bootstrap-modal.js"></script>
+<script type="text/javascript">
+    var cur_tab = 1;
+
+    $(function(){
+        cur_tab = '{$parent}';
+        $("#tmpl"+cur_tab).show();
+        var depName = '{$depname}';
+        var depId = '{$depid}';
+        $("#depid_selected").val(depId);
+        $("span[name='dep_selected']").each(function (){
+            $(this).empty();
+            $(this).append('<span class="label label-success radius">'+depName+'</span>&nbsp;');
+        });
+    });
+
+    function cancel(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+</script>
+</body>
+</html>

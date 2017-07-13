@@ -1,0 +1,62 @@
+{include file="common/header" /}
+<title></title>
+</head>
+<body>
+<article class="page-container">
+    <form action="{:U('postion/save')}" method="post" class="form form-horizontal" id="form-postion-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>职位名称：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="" placeholder="" id="name" name="name" maxlength="20" nullmsg="职位名称不能为空">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-success radius" type="submit" value="保&nbsp;存">
+            </div>
+        </div>
+    </form>
+</article>
+{include file="common/footer" /}
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $("#form-postion-add").validate({
+            rules: {
+                name: {required: true}
+            },
+            messages:{
+                name:{required:"职位名称不能为空"}
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            onfocusout:function(element){
+                $(element).valid();
+            },
+            success:"valid",
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ref) {
+                    if (ref.code) {
+                        layer.msg(ref.msg);
+                        return false;
+                    } else {
+                        layer.msg(ref.msg);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.$('.btn-refresh').click();
+                        window.parent.location.reload();
+                        parent.layer.close(index);
+                    }
+                }, 'json');
+            },
+            invalidHandler: function (form, validator) {  //不通过回调
+                return false;
+            }
+        });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

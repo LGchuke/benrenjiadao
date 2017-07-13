@@ -1,0 +1,108 @@
+{include file="common/header" /}
+<title>假期管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 人事管理 <span class="c-gray en">&gt;</span> 假期管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form action="{:U('attendance/holiday')}" method="get">
+        <div class="text-c">
+            开始时间：<input id="start_date" name="start_date" value="{$start_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" />
+            &nbsp;&nbsp;至&nbsp;&nbsp;结束时间：<input id="end_date" name="end_date" value="{$end_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" />
+            类型：<span class="select-box inline">
+            <select name="type" id="type" class="select">
+                <option value="">-请选择-</option>
+                <option value="1" {$type =='1' ? 'selected="selected"':''}>法定假日</option>
+                <option value="2" {$type =='2' ? 'selected="selected"':''}>企业假日</option>
+                <option value="3" {$type =='3' ? 'selected="selected"':''}>周六</option>
+                <option value="4" {$type =='4' ? 'selected="selected"':''}>周日</option>
+            </select></span>
+            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+        </div>
+    </form>
+    <div class="text-l">
+        <button type="button" onclick="add();" class="btn btn-success radius"><i class="Hui-iconfont">&#xe600;</i> 新增</button>
+        <!--<button type="button" onclick="init();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe68f;</i> 初始化</button>-->
+    </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="80">名称</th>
+                <th width="80">日期</th>
+                <th width="80">类型</th>
+                <th width="130">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td id="name_{$vo.id}">{$vo.name}</td>
+                <td>{$vo.ho_date}</td>
+                <td>
+                    {switch name='vo.type'}
+                    {case value='1'}法定假日{/case}
+                    {case value='2'}企业假日{/case}
+                    {case value='3'}周六{/case}
+                    {case value='4'}周日{/case}
+                    {/switch}
+                </td>
+                <td class="f-14">
+                    <a title="删除" href="javascript:;" class="label label-danger radius" onclick="del('{$vo.id}')" class="ml-5" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-del3">删除</i>
+                    </a>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+    });
+    function add(){
+        var url = "{:U('attendance/goaddholiday')}";
+        layer_show("新增假期",url,800,500);
+    }
+    function del(id){
+        layer.confirm('确认要删除该请假类型吗？',function(index){
+            $.post("{:U('attendance/delholiday')}",{id:id},function (ref) {
+                if(ref.code==0){
+                    $('.btn-refresh').click();
+                    window.location.reload();
+                    layer.msg('已删除!',{icon: 1,time:1000});
+                }else{
+                    layer.msg(ref.msg,{icon: 1,time:1000});
+                    return ;
+                }
+
+            },'json');
+        });
+    }
+
+    /*function init(){
+        layer.confirm('确认要初始化节假日数据吗？',function(index){
+            layer.msg("假期数据正在初始化，请耐心等待...",{icon: 1,time:30000});
+            $.post("{:U('attendance/initholiday')}",function (ref) {
+                layer.close();
+                if(ref.code==0){
+                    layer.msg('初始化完成!',{icon: 1,time:1000});
+                    $('.btn-refresh').click();
+                    window.location.reload();
+                }else{
+                    layer.msg(ref.msg,{icon: 1,time:1000});
+                    return ;
+                }
+
+            },'json');
+        });
+    }*/
+
+</script>
+</body>
+</html>

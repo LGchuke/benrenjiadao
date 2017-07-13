@@ -1,0 +1,271 @@
+{include file="common/header" /}
+<title>人员管理</title>
+<link rel="stylesheet" href="/static/uiadmin/lib/webuploader/0.1.5/webuploader.css" type="text/css">
+<style>
+    .webuploader-pick{
+        color: #fff;
+        background-color: #5a98de;
+        border-color: #5a98de;
+        display: inline-block;
+        box-sizing: border-box;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 400;
+        white-space: nowrap;
+        vertical-align: middle;
+        line-height: 21px;
+        border: solid 1px #ddd;
+        width: auto;
+        transition-property: background-color;
+        transition-duration: 0.1s;
+        transition-timing-function: linear;
+        transition-delay: initial;
+        padding: 4px 12px;
+        border-radius: 4px;
+    }
+</style>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 人事管理 <span class="c-gray en">&gt;</span> 人员管理<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a> </nav>
+<div class="page-container">
+    <form action="{:U('Employe/index')}" method="get">
+    <div class="text-c">
+        员工姓名：<input type="text" class="input-text" style="width:250px" placeholder="输入员工姓名" id="name" name="name" maxlength="20">
+        部门名称：<span class="select-box inline">
+            <select name="depname" id="depname" class="select">
+                <option value="">-请选择-</option>
+                {volist name="deplist" id="item" key="k"}
+                <option value="{$item.id}" >{$item.name}</option>
+                {/volist}
+            </select>
+        </span>
+        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+    </div>
+    </form>
+    <div class="mt-20">
+        <div class="cl pd-5 bg-1 bk-gray">
+            <span class="l">
+                <a class="btn btn-primary radius" href="javascript:;" onclick="goadd();">
+                新增
+                </a>
+                <a class="btn btn-danger radius" href="javascript:;" onclick="multdel();">
+                    批量删除
+                </a>
+                <a class="btn btn-primary radius" href="javascript:;" onclick="importExcel();">
+                    导入员工
+                </a>
+                <!--<span id="imglist">
+                    导入
+                </span>-->
+            </span>
+        </div>
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="20"><input type="checkbox" name="emp_xh"></th>
+                <th width="50">工号</th>
+                <th width="80">员工姓名</th>
+                <th width="40">性别</th>
+                <th width="90">部门</th>
+                <th width="50">职位</th>
+                <th width="40">指静脉录入</th>
+                <th width="50">在职状态</th>
+                <th width="160">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td><input type="checkbox" value="{$vo.id}" name="emp_xh"  class="cbi"></td>
+                <td>{$vo.job_number}</td>
+                <td>
+
+                    {switch name="vo.hr_flag"}
+                    {case value="0"}{$vo.name}<span class="label label-danger radius">HR</span>{/case}
+                    {case value="1"}{$vo.name}{/case}
+                    {/switch}
+                </td>
+                <td>
+                    {switch name="vo.sex"}
+                    {case value="0"}男{/case}
+                    {case value="1"}女{/case}
+                    {/switch}
+                </td>
+                <td>{$vo.depname}</td>
+                <td>{$vo.position}</td>
+                <td>{switch name="vo.venous_record_flag"}
+                    {case value="0"}<span class="label label-error radius">否</span>{/case}
+                    {case value="1"}<span class="label label-success radius">是</span>{/case}
+                    {/switch}
+                </td>
+                <td>{switch name="vo.status"}
+                    {case value="0"}<span class="label label-success radius">在职</span>{/case}
+                    {case value="1"}<span class="label label-error radius">离职</span>{/case}
+                    {/switch}
+                </td>
+                <td class="f-14">
+
+
+                    {switch name="vo.status"}
+                    {case value="0"}
+                    <a title="修改" href="javascript:;" class="label label-primary radius" onclick="goedit('{$vo.id}')" class="ml-5" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-edit"> 修改</i>
+                    </a>
+                    <a title="充值积分" href="javascript:;" class="label label-primary radius" onclick="go_integeral('{$vo.id}')" class="ml-5" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-hongbao">充值积分</i>
+                    </a>
+                    <a title="离职" href="javascript:;" class="label label-danger radius" onclick="go_lz(this,'{$vo.id}')" class="ml-5" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-zhuanfa">离&nbsp;职</i>
+                    </a>
+                    {/case}
+                    {case value="1"}<span class="label label-error radius">&nbsp;已离职</span>{/case}
+                    {/switch}
+                    <a title="删除" href="javascript:;" class="label label-danger radius" onclick="go_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-del3">删除</i>
+                    </a>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="application/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="application/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="application/javascript">
+    function importExcel(){
+        layer_show("员工信息导入","{:U('employe/uploademp')}",600,400);
+    }
+
+    function goadd(){
+        layer_show("新增人员","{:U('employe/goadd')}",900,600);
+    }
+    function goedit(id){
+        var url = "{:U('employe/goedit')}";
+        url = url+'?id='+id;
+        layer_show("编辑人员",url,900,600);
+    }
+    function go_integeral(id){
+        var url = "{:U('employe/gointegral')}";
+        url = url+'?id='+id;
+        layer_show("充值积分",url,900,600);
+    }
+    function multdel(){
+        var delstr = "";
+        /*$("input[type='checkbox']").each(function (){
+            if($(this).is(':checked')){
+                delstr += "," + $(this).val();
+            }
+        });*/
+        $("input[class='cbi']").each(function (){
+             if($(this).is(':checked')){
+             delstr += "," + $(this).val();
+             }
+         });
+        if(delstr != ''){
+            delstr = delstr.substring(1);
+        }else{
+            layer.msg('请选择需要删除的记录',{icon: 2,time:1500});
+            return;
+        }
+        layer.confirm('确认要批量删除这些人员吗？',function(index){
+            $.post("{:U('employe/multdel')}",{ids:delstr},function (ref) {
+                $('.btn-refresh').click();
+                window.location.reload();
+                layer.msg('已删除!',{icon: 1,time:1000});
+            },'json');
+        });
+    }
+    function go_del(obj, id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.post("{:U('employe/godel')}",{id:id},function (ref) {
+                if(ref.code){
+                    layer.msg(ref.msg,{icon: 2,time:1000});
+                    return false;
+                }
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!',{icon: 1,time:1000});
+                window.location.reload();
+            },'json');
+        });
+    }
+    function go_lz(obj, id){
+        layer.confirm('确认要将该人员设为离职吗？',function(index){
+            $.post("{:U('employe/golz')}",{id:id},function (ref) {
+                if(ref.code){
+                    layer.msg(ref.msg,{icon: 2,time:1000});
+                    return false;
+                }
+                //$(obj).parents("tr").remove();
+                layer.msg('已设置离职成功!',{icon: 1,time:1000});
+                window.location.reload();
+            },'json');
+        });
+    }
+    $(function(){
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+        // 图像上传
+        var uploader = WebUploader.create({
+            pick: {id: '#imglist', multiple: false,innerHTML: '导入'},
+            auto: true,
+            title: '员工信息导入',
+            swf: '/static/uiadmin/lib/webuploader/0.1.5/Uploader.swf',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx',
+            server: "{:U('employe/import')}",
+            fileNumLimit: 1,
+        });
+        uploader.on('uploadStart', function () {
+            loadind = layer.load(1, {shade: [0.8, '#393D49']});
+        });
+        uploader.on('uploadError', function (file, reason) {
+            layer.close(loadind);
+            uploader.reset();
+            layer.msg('图片上传错误[' + reason + ']', {icon: 5});
+        });
+        uploader.on('error', function (type) {
+            if (type == 'Q_EXCEED_SIZE_LIMIT') {
+                layer.msg('上传的图片不能超过2MB', {icon: 5});
+            } else if (type == 'Q_EXCEED_NUM_LIMIT') {
+                layer.msg('上传的图片只能上传一张', {icon: 5});
+            } else if (type == 'Q_TYPE_DENIED') {
+                layer.msg('上传的文件类型不对', {icon: 5});
+            }
+            uploader.reset();
+            return false;
+        });
+        uploader.on('uploadSuccess', function (file, data) {
+            layer.close(loadind);
+            if (data.code != '0') {
+                layer.msg(data.msg, {icon: 5});
+                uploader.reset();
+                return false;
+            } else {
+                layer.msg('数据导入成功！', {icon: 1});
+                uploader.reset();
+                location.replace(location.href);
+            }
+        });
+    });
+</script>
+</body>
+</html>

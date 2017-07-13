@@ -1,0 +1,136 @@
+{include file="common/header" /}
+<title></title>
+</head>
+<body>
+<article class="page-container">
+    <form action="{:U('Department/save')}" method="post" class="form form-horizontal" id="depform">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-4">上级部门</label>
+            <div class="formControls col-xs-4 col-sm-4">
+                <span class="select-box inline">
+                    <select style="width: 250px;" class="select" id="parentDepId" name="parentDepId" onchange="changeDep(this.value);">
+
+                    </select>
+                </span>
+            </div>
+            <label class="form-label col-xs-4 col-sm-4">&nbsp;</label>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-4">部门名称</label>
+            <div class="formControls col-xs-4 col-sm-4">
+                <input type="text" class="input-text" style="width:250px" placeholder="输入部门名称" id="depName" name="depName">
+            </div>
+            <label class="form-label col-xs-4 col-sm-4">&nbsp;</label>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-4">部门编号</label>
+            <div class="formControls col-xs-4 col-sm-4">
+                <input type="text" class="input-text" style="width:250px" placeholder="输入部门编号" id="depNo" name="depNo">
+            </div>
+            <label class="form-label col-xs-4 col-sm-4">&nbsp;</label>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-4">部门负责人</label>
+            <div class="formControls col-xs-4 col-sm-4">
+                <span class="select-box inline">
+                            <select style="width: 250px;" class="select" id="depOwner" name="depOwner">
+                                <option value="">-请选择-</option>
+                            </select>
+                        </span>
+            </div>
+            <label class="form-label col-xs-4 col-sm-4">&nbsp;</label>
+        </div>
+        <!--<div class="alert alert-info" >
+            <p style="color: red;">备注：新增时，默认部门目录为部门根目录，如需在指定部门下新增，请先选择该部门，然后再点击新增。</p>
+        </div>-->
+        <br>
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-success radius"> 保存</button>
+            <button type="button" class="btn btn-primary radius" onclick="cancel();"> 取消</button>
+        </div>
+        <input type="hidden" id="operType" name="operType" value="add">
+        <input type="hidden" id="saveid" name="saveid">
+    </form>
+</article>
+{include file="common/footer" /}
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        add();
+        $("#depform").validate({
+            rules: {
+                depName: {required: true}
+            },
+            messages:{
+                depName:{required:"部门名称不能为空"}
+            },
+            onkeyup:false,
+            onfocusout:function(element){
+                $(element).valid();
+            },
+            success:"valid",
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ref) {
+                    if (ref.code) {
+                        layer.msg(ref.msg);
+                        return false;
+                    } else {
+                        layer.msg(ref.msg);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        window.parent.location.reload();
+                        parent.layer.close(index);
+                    }
+                }, 'json');
+            },
+            invalidHandler: function (form, validator) {  //不通过回调
+                return false;
+            }
+        });
+    });
+
+    function cancel(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+    function add(){
+//        $("#operType").val("add");
+        $.ajax({
+            url:"{:U('department/getAlldepartments')}",
+            success:function(info){
+                var items = eval('(' + info + ')');
+                var html = '<option value="-1">{$entname}[公司]</option>';
+                for(var i = 0; i<items.length; i++) {
+                    html += '<option value="' + items[i]["id"] + '">' + items[i]["name"] + '</option>';
+                }
+                $("#parentDepId").empty().append(html);
+                $("#depDetailDiv").show();
+            }
+        });
+
+    }
+
+    function changeDep(id){
+        $("#depOwner").empty();
+        $.ajax({
+            url:"{:U('department/getDepOwners')}",
+            data:{"dpid":id},
+            success:function(info){
+                var items = eval('(' + info + ')');
+                var html = '';
+                for(var i = 0; i<items.length; i++) {
+                    html += '<option value="' + items[i]["id"] + '">' + items[i]["name"] + '</option>';
+                }
+                if(html == ''){
+                    html = '<option value="">-请选择-</option>';
+                }
+                $("#depOwner").empty().append(html);
+            }
+        });
+    }
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

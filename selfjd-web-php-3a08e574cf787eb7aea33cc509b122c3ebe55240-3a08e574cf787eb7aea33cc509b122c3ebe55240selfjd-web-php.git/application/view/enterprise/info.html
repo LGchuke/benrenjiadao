@@ -1,0 +1,141 @@
+{include file="common/header" /}
+<link rel="stylesheet" href="/static/css/viewer.min.css">
+<title>信息详情-企业管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 信息管理 <span
+        class="c-gray en">&gt;</span> 企业信息 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="text-l">
+        <!--<button type="button" onclick="add();" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe6df;</i> 新增</button>-->
+        <a href="{:U('enterprise/edit',['id'=>$info.result.id])}" title="编辑" class="btn btn-success radius">
+            <i class="Hui-iconfont">&#xe6df;</i>编辑
+        </a>
+    </div>
+    <div class="row cl">
+        <div class="col-xs-6 form form-horizontal">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">登录账号：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$login_name}
+                    <!--<input type="text" class="input-text" value="{$info.result.integral}" readonly="readonly" id="qiye"
+                           name="qiye" placeholder="{$info.result.integral}">-->
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">企业积分：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$info.result.integral}
+                    <!--<input type="text" class="input-text" value="{$info.result.integral}" readonly="readonly"
+                           placeholder="{$info.result.integral}" id="integral" name="integral">-->
+                </div>
+            </div>
+            <div  class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">公司名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$info.result.name}
+                    <!-- <input type="text" class="input-text" value="{$info.result.name}" id="name" name="name"
+                            readonly="readonly" placeholder="{$info.result.name}">-->
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-6 col-sm-3">手机号码：</label>
+                <div class="formControls col-xs-6 col-sm-9 skin-minimal">{$info.result.mobile}
+                    <!--<input type="text" class="input-text" value="{$info.result.mobile}" id="mobile" name="mobile"
+                           readonly="readonly" placeholder="{$info.result.mobile}">-->
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">企业邮箱：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$info.result.email}
+                    <!--<input type="text" class="input-text" value="{$info.result.email}" id="email" name="email"
+                           readonly="readonly" placeholder="{$info.result.email}">-->
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">联系电话：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$info.result.teliphone}
+                    <!--<input type="text" class="input-text" value="{$info.result.teliphone}" id="teliphone" name="teliphone"
+                           readonly="readonly" placeholder="{$info.result.teliphone}">-->
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">人员规模：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$info.result.scale}
+                    <!--<input type="text" class="input-text" value="{$info.result.scale}" id="scale" name="scale"
+                           readonly="readonly" placeholder="{$info.result.scale}">-->
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">地址：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$info.result.address}
+                    <!--<input type="text" class="input-text" value="{$info.result.address}" id="address" name="address"
+                           readonly="readonly" placeholder="{$info.result.address}">-->
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">公司简介：</label>
+                <div class="formControls col-xs-8 col-sm-9">{$info.result.summary}
+                    <!--<input type="text" class="input-text" value="{$info.result.summary}" id="summary" name="summary"
+                           readonly="readonly" placeholder="{$info.result.summary}">-->
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="row cl">
+                <div class="col-xs-12 panel">
+                    <div class="row cl">
+                        <label class="form-label col-xs-3 col-sm-3">公司logo：</label>
+                        <div class="formControls col-xs-9 col-sm-9" id="lgfd">
+                            {if condition="$info.result.logo eq null"}
+                            <img src="/static/img/blank.png" width="200px;" height="150px;" id="avata_img">
+                            {/if}
+                            {if condition="$info.result.logo neq null"}
+                            <img src="{:C('img_http_url')}{$info.result.logo}" width="188px;" height="188px;" class="img-responsive thumbnail" alt="公司logo" id="yingye">
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 panel">
+                    <div class="row cl">
+                        <label class="form-label col-xs-3 col-sm-3">营业执照：</label>
+                        <div class="formControls col-xs-9 col-sm-9" id="yzfd">
+                            {if condition="$info.result.busiessLicense eq null"}
+                            <img src="/static/img/blank.png" width="200px;" height="150px;" id="avata_img">
+                            {/if}
+                            {if condition="$info.result.busiessLicense neq null"}
+                            <img src="{:C('img_http_url')}{$info.result.busiessLicense}" width="188px;" height="188px;" class="img-responsive thumbnail" alt="营业执照" id="yingye">
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div style="clear: both;text-align: center;padding-top: 50px;">
+        <a href="{:U('enterprise/edit',['id'=>$info.result.id])}" title="编辑" class="btn btn-secondary">编辑</a>
+    </div>-->
+
+</div>
+{include file="common/footer" /}
+<script src="/static/js/viewer.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).ready(function(){
+            var opt = {
+                button:true,
+                navbar:false,
+                title:false,
+                toolbar:false,
+                tooltop:false,
+                rotatable:false,
+                transition:false,
+                fullscreen:true,
+                keyboard:false
+            };
+            $('#yzfd').viewer(opt);
+            $('#lgfd').viewer(opt);
+        });
+    });
+</script>
+</body>
+</html>

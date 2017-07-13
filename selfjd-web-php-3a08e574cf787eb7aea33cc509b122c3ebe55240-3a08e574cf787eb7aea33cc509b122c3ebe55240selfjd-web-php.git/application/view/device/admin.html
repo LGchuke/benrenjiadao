@@ -1,0 +1,81 @@
+{include file="common/header" /}
+<title>设备信息</title>
+</head>
+<body>
+<div class="page-container">
+    <form action="{:U('device/admin')}" method="get">
+        <input type="hidden" name="id" value="{$info.id}">
+        <div class="text-c"> 姓名：<input type="text" class="input-text" style="width:250px" placeholder="输入需要分配权限人的姓名" id="name" name="name">
+            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+        </div>
+    </form>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th>姓名</th>
+                <th>职务/岗位</th>
+                <th>手机号</th>
+                <th>权限</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo"}
+            <tr class="text-c">
+                <td>{$vo.name}</td>
+                <td>{$vo.position}</td>
+                <td>{$vo.mobile}</td>
+                <td class="td-status">
+                    {if condition="$vo.is_admin eq '1'"}
+                    <input type="button" class="btn btn-error radius" onclick="del(this,'{$vo.id}','{$vo.rid}',0)" value="取消授权">
+                    {else /}
+                    <input type="button" class="btn btn-success radius" onclick="del(this,'{$vo.id}','{$vo.rid}',1)" value="添加授权">
+                    {/if}
+                </td>
+
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+    function del(obj,id,rid,type){
+        var msg = type?'确认要授权吗？':'确认要解除授权吗？';
+        layer.confirm(msg,function(index){
+            $.post("{:U('device/addadmin')}",{id:id,cid:'{$info.id}',rid:rid, type:type},function (ref) {
+                if(ref.code){
+                    layer.msg(ref.msg,{icon: 2,time:1000});
+                    return false;
+                }
+                layer.msg((type?'已经授权':'已经解除授权'),{icon: 1,time:1000});
+                location.replace(location.href);
+            },'json');
+        });
+    }
+</script>
+</body>
+</html>

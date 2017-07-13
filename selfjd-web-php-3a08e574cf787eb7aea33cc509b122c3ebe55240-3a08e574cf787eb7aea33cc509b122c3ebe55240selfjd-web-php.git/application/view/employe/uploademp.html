@@ -1,0 +1,164 @@
+{include file="common/header" /}
+<title>新增人员</title>
+<link rel="stylesheet" href="/static/uiadmin/lib/webuploader/0.1.5/webuploader.css" type="text/css">
+<style>
+    .webuploader-pick{
+        color: #fff;
+        background-color: #5a98de;
+        border-color: #5a98de;
+        display: inline-block;
+        box-sizing: border-box;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 400;
+        white-space: nowrap;
+        vertical-align: middle;
+        line-height: 21px;
+        border: solid 1px #ddd;
+        width: auto;
+        transition-property: background-color;
+        transition-duration: 0.1s;
+        transition-timing-function: linear;
+        transition-delay: initial;
+        padding: 4px 12px;
+        border-radius: 4px;
+    }
+    .layer_notice {
+        float: left;
+        width: 500px;
+        overflow: scroll;
+        background: #ee5f5b;
+        padding: 10px;
+    }
+    .layer_notice li{
+        color: white;
+    }
+</style>
+
+</head>
+<body>
+<article class="page-container">
+        <div style="float: left;width: 100%;">
+            <fieldset>
+                <legend style="border: 0;font-size: 15px;">步骤1：选择模板下载</legend>
+                <a href="{:U('employe/downloadTempl')}"><img src="/static/img/excel.jpg" width="20px" height="20px">模板下载</a>
+            </fieldset>
+        </div>
+
+        <div style="float: left;width: 100%;">
+            <fieldset>
+                <legend style="border: 0;font-size: 15px;">步骤2：整理数据并导入</legend>
+                <span id="imglist">选择文件</span>
+                <span id="fileTitle"></span>
+            </fieldset>
+        </div>
+
+        <div style="clear: both;text-align: center;padding-top: 50px;">
+            <button class="btn btn-success radius" id="uploadBtn">开始导入</button>
+        </div>
+</article>
+{include file="common/footer" /}
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/static/uiadmin/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+<script type="application/javascript">
+    function cancel(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+    var loading = '';
+    $(document).ready(function(){
+
+        // 图像上传
+        // 图像上传
+        var uploader = WebUploader.create({
+            pick: {id: '#imglist', multiple: false},
+            auto: false,
+            swf: '/static/uiadmin/lib/webuploader/0.1.5/Uploader.swf',
+            accept: {
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+            server: "{:U('employe/import')}",
+            fileNumLimit: 1
+        });
+
+        $("#uploadBtn").on( 'click', function() {
+            uploader.upload();
+        });
+
+        uploader.on( 'fileQueued', function( file ) {
+            var $fileName = $(
+                            '<div id="' + file.id + '" class="file-item thumbnail">' +
+                            '<img>' +
+                            '<div class="info">' + file.name + '</div>' +
+                            '</div>'
+                    );
+
+            $("#fileTitle").empty().append( $fileName );
+
+        });
+
+        uploader.on('uploadStart', function () {
+            loadind = layer.load(1, {shade: [0.8, '#393D49']});
+        });
+        uploader.on('uploadError', function (file, reason) {
+            layer.close(loadind);
+            uploader.reset();
+            layer.msg('文件上传错误[' + reason + ']', {icon: 5});
+        });
+        uploader.on('error', function (type) {
+            if (type == 'Q_EXCEED_SIZE_LIMIT') {
+                layer.msg('上传的文件不能超过2MB', {icon: 5});
+            } else if (type == 'Q_EXCEED_NUM_LIMIT') {
+                layer.msg('上传的文件只能上传一张', {icon: 5});
+            } else if (type == 'Q_TYPE_DENIED') {
+                layer.msg('上传的文件类型不对', {icon: 5});
+            }
+            uploader.reset();
+            return false;
+        });
+        uploader.on('uploadSuccess', function (file, data) {
+            layer.close(loadind);
+            if (data.code != '0') {
+                layer.msg(data.msg, {icon: 2,time:1500});
+                uploader.reset();
+                return false;
+            } else {
+                uploader.reset();
+                var html = '';
+                html += '<ul style="display: block;" class="layer_notice">';
+                for(var i =0; i<data.data.length; i++){
+                    var item = data.data[i];
+                    var itemValue = item.value;
+                    var itemMsg = item.msg;
+                    html += '<li>记录:[姓名:'+itemValue[0]+',手机:'+itemValue[4]+',] 导入错误，提示:'+itemMsg+'</li>';
+                }
+                html += '</ul>';
+
+                layer.open({
+                    type: 1,
+                    shade: false,
+                    area: ['550px', '333px'],
+                    title: false, //不显示标题
+                    content: html, //捕获的元素
+                    cancel: function(index){
+                        layer.close(index);
+                        location.replace(location.href);
+                        var selfidx = parent.layer.getFrameIndex(window.name);
+                        parent.$('.btn-refresh').click();
+                        window.parent.location.reload();
+                        parent.layer.close(selfidx);
+                    }
+                });
+
+                //layer.msg('数据导入成功！',{icon: 1,time:1000});
+
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

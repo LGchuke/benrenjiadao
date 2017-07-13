@@ -1,0 +1,67 @@
+{include file="common/header" /}
+<title>积分充值明细</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 积分 <span class="c-gray en">&gt;</span> 积分充值明细 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <!--<form action="{:U('Integral/recharge')}" method="get">
+    <div class="text-c">
+        姓名：<input type="text" class="input-text" style="width:250px" placeholder="输入员工姓名" maxlength="20" id="name" name="name">
+        联系号码：<input type="text" class="input-text" style="width:250px" placeholder="输入手机号码" maxlength="20" id="mobile" name="mobile">
+        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+    </div>
+    </form>-->
+    <form action="{:U('Integral/recharge')}" method="get">
+        <div class="text-c">
+            开始时间：<input id="start_date" name="start_date" value="{$start_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" />
+            &nbsp;&nbsp;至&nbsp;&nbsp;结束时间：<input id="end_date" name="end_date" value="{$end_date}" class="input-text Wdate" style="width:230px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" />
+
+            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+        </div>
+    </form>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="150">充值积分</th>
+                <th width="130">充值时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$vo.amount}</td>
+                <td>{$vo.create_time}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.table-sort').dataTable({
+            "bFilter": false,//过滤功能
+            "bPaginate": false,
+            "aaSorting": [],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "bSort": false,
+            "bInfo": false,
+        });
+        $('.table-sort tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script>
+</body>
+</html>

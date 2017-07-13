@@ -1,0 +1,79 @@
+{include file="common/header" /}
+<title></title>
+</head>
+<body>
+<article class="page-container">
+    <form action="{:U('index/changepwd')}" method="post" class="form form-horizontal" id="form-postion-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">旧密码：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="" placeholder="" id="oldpwd" name="oldpwd" maxlength="20">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">新密码：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="" placeholder="" id="newpwd" name="newpwd" maxlength="20">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">重新确认新密码：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="" placeholder="" id="confirmpwd" name="confirmpwd" maxlength="20">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-success radius" type="submit" value="保&nbsp;存">
+            </div>
+        </div>
+    </form>
+</article>
+{include file="common/footer" /}
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $("#form-postion-add").validate({
+            rules: {
+                oldpwd: {required: true,rangelength:[6,20]},
+                newpwd: {required: true,rangelength:[6,20]},
+                confirmpwd: {required: true,rangelength:[6,20],equalTo: "#newpwd"}
+            },
+            messages:{
+                oldpwd:{required:"旧密码不能为空", rangelength:"请输入6-20位长度密码"},
+                newpwd: {required: "新密码不能为空", rangelength:"请输入6-20位长度密码"},
+                confirmpwd: {
+                    equalTo: "确认密码和新密码不一致", rangelength:"请输入6-20位长度密码"
+                }
+            },
+            onkeyup:false,
+            onfocusout:function(element){
+                $(element).valid();
+            },
+            success:"valid",
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ref) {
+                    if (ref.code) {
+                        layer.msg(ref.msg);
+                        return false;
+                    } else {
+                        layer.msg(ref.msg);
+                        setInterval(function(){
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        },1000);
+                    }
+                }, 'json');
+            },
+            invalidHandler: function (form, validator) {  //不通过回调
+                return false;
+            }
+        });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

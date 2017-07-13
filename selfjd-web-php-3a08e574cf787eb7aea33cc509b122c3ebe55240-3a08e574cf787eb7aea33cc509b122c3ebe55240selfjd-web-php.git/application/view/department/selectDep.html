@@ -1,0 +1,142 @@
+{include file="common/header" /}
+<title>选择部门</title>
+<link rel="stylesheet" href="/static/uiadmin/lib/zTree/v3/css/demo.css" type="text/css">
+<link rel="stylesheet" href="/static/uiadmin/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<style>
+    .ztree * {
+        font-size: 15px;
+        margin: 3px;;
+    }
+    .ztree a, a:link, a:focus, a:visited,a:hover,a:active {
+        text-decoration:none;
+        outline:none;
+    }
+</style>
+
+
+</head>
+<body>
+
+<script type="text/javascript" src="/static/uiadmin/lib/zTree/v3/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/zTree/v3/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/zTree/v3/js/jquery.ztree.excheck-3.5.js"></script>
+
+<ul id="treeDemo" class="ztree" style="width: 100%;height: 100%;background-color: #fff;"></ul>
+
+<div style="clear: both;text-align: center;padding-top: 50px;">
+    <input class="btn btn-success radius" type="button" value="选&nbsp;择" id="operBtn" onclick="selectdp();">
+    <input class="btn btn-danger radius" type="button" value="取&nbsp;消" onclick="cancel();">
+</div>
+
+<!--/_footer /作为公共模版分离出去-->
+<script type="application/javascript">
+    var curDepId = '';
+    var curDepName= '';
+    var setting = {
+        check: {
+            enable: true
+        },
+        view: {
+            showIcon: false
+        },
+        /*async: {
+            enable: true,
+            url:"{:U('department/getDepartmentDate')}",
+            autoParam:["id", "name", "level"],
+            dataFilter: filter
+        },*/
+        callback: {
+            onClick: onClick
+        }
+    };
+
+    var setting2 = {
+        data: {
+            simpleData: {
+                enable: true
+            }
+        }
+    };
+
+    function filter(treeId, parentNode, childNodes) {
+        if (!childNodes) return null;
+        for (var i=0, l=childNodes.length; i<l; i++) {
+            childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+        }
+        return childNodes;
+    }
+
+    function onClick(event, treeId, treeNode, clickFlag) {
+        curDepId = treeNode.id;
+        curDepName = treeNode.name;
+    }
+
+    function getSelectedDeps(){
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getCheckedNodes(true);
+        for (var i =0; i<nodes.length; i++) {
+            var node = nodes[i];
+            curDepId += "," + node.id;
+            curDepName += "," + node.name;
+        }
+    }
+
+    function selectdp(){
+        getSelectedDeps();
+        if(curDepId == ''){
+            parent.layer.msg('请先选择部门!',{icon: 2,time:1000});
+            return ;
+        }
+        curDepId = curDepId.substring(1);
+        curDepName = curDepName.substring(1);
+        parent.$("#depid_selected").val(curDepId);
+        var depnames = curDepName.split(",");
+        parent.$("span[name='dep_selected']").each(function (){
+            $(this).empty();
+            for(var i =0; i< depnames.length; i++){
+                $(this).append('<span class="label label-success radius">'+depnames[i]+'</span>&nbsp;');
+            }
+        });
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+    function cancel(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+    $(document).ready(function(){
+        var nodeData = eval('(' + '{$deps}' + ')');
+        if(nodeData.length > 0){
+            $.fn.zTree.init($("#treeDemo"), setting, nodeData);
+        }else{
+            $("#operBtn").hide();
+        }
+    });
+</script>
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    var deps = [];
+    $(function(){
+        /*var ditems = eval('(' + '{$deplist}' + ')');
+         for(var i = 0; i<ditems.length; i++){
+         if(items[i]["parent"] == null){//父节点为null的都是顶层元素
+         var tmp = {};
+         tmp.parent = null;
+         tmp.id = ditems[i]["id"];
+         tmp.name = ditems[i]["name"];
+         deps.push(tmp);
+         }else{//不是顶层元素
+         var id = ditems[i]["id"];
+         var parent = ditems[i]["parent"];
+
+         }
+         }
+         console.info(ditems);*/
+
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

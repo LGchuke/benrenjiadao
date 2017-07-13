@@ -1,0 +1,72 @@
+{include file="common/header" /}
+<title>假期管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 人事管理 <span class="c-gray en">&gt;</span> 假期管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="text-l">
+        <button type="button" onclick="add();" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe600;</i> 新增</button>
+    </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="80">名称</th>
+                <th width="80">日期</th>
+                <th width="80">类型</th>
+                <th width="130">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="k"}
+            <tr class="text-c">
+                <td>{$vo.name}</td>
+                <td>{$vo.ho_date}</td>
+                <td>
+                    <!--{switch name='vo.type'}
+                    {case value='1'}法定假日{/case}
+                    {case value='2'}企业假日{/case}
+                    {case value='3'}周末{/case}
+                    {/switch}-->
+                </td>
+                <td class="f-14">
+                    <a title="删除" href="javascript:;" class="label label-danger radius" onclick="del('{$vo.id}')" class="ml-5" style="text-decoration:none">
+                        <i class="Hui-iconfont Hui-iconfont-del3">删除</i>
+                    </a>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div id="pageNav" class="pageNav" total="{$total}"></div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript" src="/static/uiadmin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/uiadmin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+    });
+    function add(){
+        var url = "{:U('leave/goadd')}";
+        layer_show("新增假期",url,800,500);
+    }
+    function del(id){
+        layer.confirm('确认要删除该假期吗？',function(index){
+            $.post("{:U('leave/del')}",{id:id},function (ref) {
+                if(ref.code==0){
+                    $('.btn-refresh').click();
+                    window.location.reload();
+                    layer.msg('已删除!',{icon: 1,time:1000});
+                }else{
+                    layer.msg(ref.msg,{icon: 1,time:1000});
+                    return ;
+                }
+
+            },'json');
+        });
+    }
+</script>
+</body>
+</html>
